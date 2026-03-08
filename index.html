@@ -1,113 +1,824 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eriselda's Website</title>
-    <link rel="icon" href="data:," />
-    
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121212">
+    <title>Bredli's Website</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
+
+    <!-- Instant theme application to prevent flash -->
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme-preference') || 'auto';
+            if (theme !== 'auto') {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+            // Set meta theme-color immediately
+            const isDark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.remove());
+            const meta = document.createElement('meta');
+            meta.name = 'theme-color';
+            meta.content = isDark ? '#0c0e14' : '#ffffff';
+            document.head.appendChild(meta);
+        })();
+    </script>
+
     <style>
-        /* Minimalistic variables */
+        /* === DESIGN TOKENS === */
         :root {
-            --bg-color: #fafafa;
-            --text-main: #111827;
-            --text-sub: #6b7280;
-            --btn-bg: #111827;
-            --btn-hover: #000000;
-            --btn-text: #ffffff;
+            --primary-color: #3949ab;
+            --primary-dark: #1a237e;
+            --secondary-color: #ffa726;
+            --accent-color: #9c27b0;
+            --text-color: #333333;
+            --text-light: #ffffff;
+            --bg-color: #ffffff;
+            --surface-color: #e0e0e0;
+
+            --dark-bg: #0c0e14;
+            --dark-surface: #151924;
+            --dark-surface-light: #1d2331;
+            --dark-text: #e6eaf0;
+            --dark-text-muted: #95a0b1;
+            --dark-border: #2b3648;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            background-color: var(--bg-color);
+            overscroll-behavior: none;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            font-family: 'Google Sans Flex', 'Roboto', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.5;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
-            margin: 0;
-            padding: 2rem;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            box-sizing: border-box;
+            min-height: 100dvh;
+            background: var(--bg-color);
+        }
+
+        /* === LAYOUT === */
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            width: 100%;
+            max-width: 800px;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* === PROFILE === */
+        .profile-section {
             text-align: center;
+            margin-bottom: 32px;
         }
 
-        h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
-            font-weight: 800;
-            letter-spacing: -0.04em;
+        .profile-photo {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 16px rgba(57, 73, 171, 0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 24px rgba(57, 73, 171, 0.25);
+        }
+
+        .profile-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin: 14px 0 4px 0;
+            color: var(--text-color);
+        }
+
+        .profile-subtitle {
+            font-size: 0.95em;
             margin: 0;
-            line-height: 1.1;
-        }
-
-        p.subtitle {
-            font-size: clamp(1.1rem, 3vw, 1.5rem);
-            color: var(--text-sub);
-            margin-top: 1rem;
-            margin-bottom: 3.5rem;
+            color: #888;
             font-weight: 400;
         }
 
-        /* Segmented Grid Button */
-        .grid-btn {
-            display: inline-grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 2px; /* 2px gap as requested */
-            text-decoration: none;
-            color: var(--btn-text);
+        .profile-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 14px;
         }
 
-        .btn-part {
-            background-color: var(--btn-bg);
-            padding: 0.875rem 1.25rem;
+        .profile-links a {
+            color: var(--primary-dark);
+            font-size: 1.4em;
+            transition: color 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+        }
+
+        .profile-links a:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        /* === BUTTON GROUPS === */
+        .button-groups {
             display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            justify-content: center;
+        }
+
+        .button-group a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .group-btn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+            gap: 8px;
+            padding: 12px 22px;
+            font-family: 'Google Sans Flex', 'Roboto', sans-serif;
+            font-size: 0.92em;
+            font-weight: 500;
+            color: #444;
+            background-color: #f0f0f3;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: border-radius 0.25s cubic-bezier(.4, 0, .2, 1),
+                box-shadow 0.25s cubic-bezier(.4, 0, .2, 1),
+                filter 0.15s ease,
+                color 0.25s ease,
+                background-color 0.25s ease;
         }
 
-        /* Default states: Rounded ends, less rounded middle */
-        .btn-part:first-child {
-            border-radius: 16px 4px 4px 16px;
-            padding-left: 1.5rem;
+        .group-btn i {
+            font-size: 1em;
+            color: var(--primary-color);
+            transition: color 0.25s ease;
         }
 
-        .btn-part:nth-child(2) {
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 0.02em;
+        /* Row-aware border radii (applied via JS) */
+        .group-btn.first-in-row {
+            border-top-left-radius: 20px !important;
+            border-bottom-left-radius: 20px !important;
         }
 
-        .btn-part:last-child {
-            border-radius: 4px 16px 16px 4px;
-            padding-right: 1.5rem;
+        .group-btn.last-in-row {
+            border-top-right-radius: 20px !important;
+            border-bottom-right-radius: 20px !important;
         }
 
-        /* Hover and Active states: Completely rounded corners */
-        .grid-btn:hover .btn-part,
-        .grid-btn:active .btn-part,
-        .grid-btn:focus .btn-part {
-            border-radius: 50px;
-            background-color: var(--btn-hover);
+        .group-btn.only-in-row {
+            border-radius: 20px !important;
         }
 
-        /* Remove default focus outline for a custom one if needed */
-        .grid-btn:focus {
-            outline: none;
+        .group-btn:hover {
+            border-radius: 20px !important;
+            box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.25), 0 2px 5px rgba(0, 0, 0, 0.15);
+            filter: brightness(1.03);
+        }
+
+        .group-btn:active {
+            border-radius: 20px;
+            transform: scale(0.97);
+            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.1);
+            filter: brightness(0.9);
+        }
+
+        /* === FOOTER === */
+        .footer {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+            color: var(--primary-dark);
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .footer-tools {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .theme-toggle {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--surface-color);
+            color: var(--text-color);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+            opacity: 0.8;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            opacity: 1;
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-links {
+            margin-bottom: 10px;
+        }
+
+        .social-links a {
+            color: var(--primary-dark);
+            font-size: 1.0em;
+            margin: 0 10px;
+            transition: color 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer .copyright {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin: 0;
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        /* === CAT COMPANION === */
+        @keyframes cat-idle {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        #cat-companion {
+            position: fixed;
+            bottom: 0;
+            right: 20px;
+            bottom: env(safe-area-inset-bottom, 0);
+            z-index: 1000;
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+            transform-origin: bottom center;
+        }
+
+        #cat-image {
+            width: 150px;
+            height: auto;
+            animation: cat-idle 2.5s ease-in-out infinite;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.15));
+            transition: transform 0.2s ease;
+        }
+
+        #cat-speech-bubble {
+            position: absolute;
+            bottom: 100px;
+            right: 0;
+            width: 200px;
+            border-radius: 16px;
+            padding: 15px;
+            background: var(--bg-color);
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            font-size: 0.9em;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            pointer-events: none;
+            transition: all 0.2s cubic-bezier(.68, -.55, .265, 1.55);
+            -webkit-hyphens: auto;
+            hyphens: auto;
+        }
+
+        #cat-speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 24px;
+            width: 14px;
+            height: 14px;
+            background: var(--bg-color);
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+            transform: rotate(45deg);
+        }
+
+        #cat-speech-bubble.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 1000px) {
+            #cat-companion {
+                transform: translateY(120%) scale(0.5);
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page-wrapper {
+                padding: 30px 16px;
+            }
+
+            .profile-photo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .group-btn {
+                padding: 11px 16px;
+                font-size: 0.85em;
+            }
+        }
+
+
+        /* ============================== */
+        /*    DARK THEME — EXPLICIT       */
+        /* ============================== */
+        html[data-theme="dark"] {
+            color-scheme: dark;
+            background-color: var(--dark-bg);
+        }
+
+        html[data-theme="dark"] body {
+            color: var(--dark-text);
+            background: var(--dark-bg);
+        }
+
+        html[data-theme="dark"] .profile-name {
+            color: var(--dark-text);
+        }
+
+        html[data-theme="dark"] .profile-subtitle {
+            color: var(--dark-text-muted);
+        }
+
+        html[data-theme="dark"] .profile-links a {
+            color: var(--dark-text-muted);
+        }
+
+        html[data-theme="dark"] .profile-links a:hover {
+            color: #8c9eff;
+        }
+
+        html[data-theme="dark"] .profile-photo {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        html[data-theme="dark"] .group-btn {
+            background-color: var(--dark-surface-light);
+            color: var(--dark-text);
+        }
+
+        html[data-theme="dark"] .group-btn i {
+            color: #8c9eff;
+        }
+
+        html[data-theme="dark"] .group-btn:hover {
+            box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0, 0, 0, 0.3);
+            filter: brightness(1.1);
+        }
+
+        html[data-theme="dark"] .group-btn:active {
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);
+            filter: brightness(0.85);
+        }
+
+        html[data-theme="dark"] .theme-toggle {
+            background: var(--dark-surface-light);
+            color: var(--dark-text);
+            border-color: var(--dark-border);
+        }
+
+        html[data-theme="dark"] .footer {
+            color: var(--dark-text-muted);
+        }
+
+        html[data-theme="dark"] .social-links a {
+            color: var(--dark-text-muted);
+        }
+
+        html[data-theme="dark"] .social-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        html[data-theme="dark"] #cat-speech-bubble {
+            background: var(--dark-surface);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        html[data-theme="dark"] #cat-speech-bubble::after {
+            background: var(--dark-surface);
+            border-color: var(--dark-border);
+        }
+
+        html[data-theme="dark"] #cat-image {
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.4));
+        }
+
+
+        /* ============================== */
+        /*    DARK THEME — AUTO (SYSTEM)  */
+        /* ============================== */
+        @media (prefers-color-scheme: dark) {
+            html:not([data-theme="light"]) {
+                color-scheme: dark;
+                background-color: var(--dark-bg);
+            }
+
+            html:not([data-theme="light"]) body {
+                color: var(--dark-text);
+                background: var(--dark-bg);
+            }
+
+            html:not([data-theme="light"]) .profile-name {
+                color: var(--dark-text);
+            }
+
+            html:not([data-theme="light"]) .profile-subtitle {
+                color: var(--dark-text-muted);
+            }
+
+            html:not([data-theme="light"]) .profile-links a {
+                color: var(--dark-text-muted);
+            }
+
+            html:not([data-theme="light"]) .profile-links a:hover {
+                color: #8c9eff;
+            }
+
+            html:not([data-theme="light"]) .profile-photo {
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            }
+
+            html:not([data-theme="light"]) .group-btn {
+                background-color: var(--dark-surface-light);
+                color: var(--dark-text);
+            }
+
+            html:not([data-theme="light"]) .group-btn i {
+                color: #8c9eff;
+            }
+
+            html:not([data-theme="light"]) .group-btn:hover {
+                box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0, 0, 0, 0.3);
+                filter: brightness(1.1);
+            }
+
+            html:not([data-theme="light"]) .group-btn:active {
+                box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);
+                filter: brightness(0.85);
+            }
+
+            html:not([data-theme="light"]) .theme-toggle {
+                background: var(--dark-surface-light);
+                color: var(--dark-text);
+                border-color: var(--dark-border);
+            }
+
+            html:not([data-theme="light"]) .footer {
+                color: var(--dark-text-muted);
+            }
+
+            html:not([data-theme="light"]) .social-links a {
+                color: var(--dark-text-muted);
+            }
+
+            html:not([data-theme="light"]) .social-links a:hover {
+                color: var(--secondary-color);
+            }
+
+            html:not([data-theme="light"]) #cat-speech-bubble {
+                background: var(--dark-surface);
+                border-color: var(--dark-border);
+                color: var(--dark-text);
+            }
+
+            html:not([data-theme="light"]) #cat-speech-bubble::after {
+                background: var(--dark-surface);
+                border-color: var(--dark-border);
+            }
+
+            html:not([data-theme="light"]) #cat-image {
+                filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.4));
+            }
+        }
+
+        /* Explicit light override */
+        [data-theme="light"] {
+            color-scheme: light;
         }
     </style>
+
+    <script>
+        /* === SMART BUTTON GROUP ROW DETECTION === */
+        function updateButtonGroupRadii() {
+            document.querySelectorAll('.button-group').forEach(group => {
+                const buttons = Array.from(group.querySelectorAll('.group-btn'));
+                if (!buttons.length) return;
+
+                // Clear previous classes
+                buttons.forEach(btn => {
+                    btn.classList.remove('first-in-row', 'last-in-row', 'only-in-row');
+                });
+
+                // Group buttons by visual row (same offsetTop)
+                let rows = [];
+                let currentRow = [buttons[0]];
+                let currentTop = buttons[0].offsetTop;
+
+                for (let i = 1; i < buttons.length; i++) {
+                    const btn = buttons[i];
+                    if (Math.abs(btn.offsetTop - currentTop) < 4) {
+                        // Same row (4px tolerance for sub-pixel differences)
+                        currentRow.push(btn);
+                    } else {
+                        rows.push(currentRow);
+                        currentRow = [btn];
+                        currentTop = btn.offsetTop;
+                    }
+                }
+                rows.push(currentRow);
+
+                // Apply row-aware classes
+                rows.forEach(row => {
+                    if (row.length === 1) {
+                        row[0].classList.add('only-in-row');
+                    } else {
+                        row[0].classList.add('first-in-row');
+                        row[row.length - 1].classList.add('last-in-row');
+                    }
+                });
+            });
+        }
+
+        /* === THEME TOGGLE === */
+        function setupThemeToggle() {
+            const KEY = 'theme-preference';
+            const BTN = document.getElementById('theme-toggle');
+            const ICON = document.getElementById('theme-toggle-icon');
+            if (!BTN || !ICON) return;
+
+            const icons = { auto: 'fas fa-adjust', light: 'far fa-sun', dark: 'far fa-moon' };
+
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem(KEY, theme);
+                updateUI(theme);
+                // Update meta theme-color for browser chrome
+                const isDark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.remove());
+                const meta = document.createElement('meta');
+                meta.name = 'theme-color';
+                meta.content = isDark ? '#0c0e14' : '#ffffff';
+                document.head.appendChild(meta);
+            };
+
+            const updateUI = (theme) => {
+                ICON.className = icons[theme] || icons.auto;
+                const label = theme.charAt(0).toUpperCase() + theme.slice(1);
+                BTN.setAttribute('aria-label', `Theme: ${label}`);
+                BTN.title = `Theme: ${label}`;
+            };
+
+            BTN.addEventListener('click', () => {
+                const currentPref = localStorage.getItem(KEY) || 'auto';
+                const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                let newPref;
+
+                if (isSystemDark) {
+                    if (currentPref === 'auto' || currentPref === 'dark') {
+                        newPref = 'light';
+                    } else {
+                        newPref = 'auto';
+                    }
+                } else {
+                    if (currentPref === 'auto' || currentPref === 'light') {
+                        newPref = 'dark';
+                    } else {
+                        newPref = 'auto';
+                    }
+                }
+                applyTheme(newPref);
+            });
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                if (localStorage.getItem(KEY) === 'auto') {
+                    applyTheme('auto');
+                }
+            });
+
+            applyTheme(localStorage.getItem(KEY) || 'auto');
+        }
+
+        /* === CAT COMPANION === */
+        const catMessages = [
+            "Psst. I helped build this site... mostly by sitting on the keyboard.",
+            "I've knocked all the pens off the desk. My work here is done.",
+            "I'm not sleeping, I'm compiling. It's a very complex process.",
+            "The box this computer came in was far more interesting than the computer itself.",
+            "Oh, were you using this piece of paper? It looked like it desperately needed to be on the floor.",
+            "I've conducted extensive stress tests on that chair you're sitting in. It's... adequate.",
+            "Some call it mischief, I call it 'unsolicited quality assurance testing'.",
+            "That houseplant looked at me funny. It had to go.",
+            "My human thinks they're in charge. It's quite adorable, isn't it?",
+            "Just so we're clear, this is my flat. I just let the human pay the rent.",
+            "I have a doctorate in Napping from the University of Sunbeams. What's your excuse?",
+            "My schedule today: 10:00 nap, 11:00 pre-lunch nap, 12:00 lunch, 14:00 post-lunch nap...",
+            "I'm not ignoring you, I'm simply in energy-saving mode.",
+            "Of course, I understand thermodynamics. A lap is warm (ΔQ > 0), the floor is not.",
+            "The human went to university; I mastered structural engineering by finding the single weakest point of a cardboard box.",
+            "My food bowl is only 98% full. I consider this a catastrophic failure of service.",
+            "I see you have a biscuit. I also like biscuits. We should have a chat. 🧐",
+            "A sunbeam has appeared 2 metres to my left. I must relocate immediately. This is not a drill.",
+            "The sound of a snack packet rustling from another room? I can get there in 2.7 seconds. Olympic-level.",
+            "It is precisely 19:03. Are you aware of the critically low biscuit levels?",
+            "I'm powered by a complex algorithm of treats and head scratches.",
+            "Welcome! Don't mind me, I'm just supervising the human.",
+            "If you scroll too fast, I'm going to try and catch your mouse cursor.",
+            "Go on, try to click me again. I dare you.",
+            "Are you still here? Impressive focus for a human.",
+            "Don't tell anyone, but I'm the real reason this website is so purr-fect.",
+            "I've reviewed your user session. My analysis indicates a severe lack of attention being paid to me.",
+            "I've sent a few emails on your behalf. They mostly say 'sdfghjkl;'. You're welcome.",
+            "Alright? Just having a little rest before my next big rest.",
+            "Blimey, that's a lot of reading. My eyes are tired just looking at it.",
+            "Click on a section to learn more!",
+            "Was that a bird? Sorry, I lost my train of thought. What were we talking about?",
+            "They say curiosity killed the cat, but satisfaction brought it back. That's why I get nine lives. 😉",
+            "The human's typing is so loud. It's putting me off my afternoon slumber.",
+            "Right, that's enough screen time for one day. Where's the telly remote?",
+            "Kalofsh një ditë të bukur!"
+        ];
+
+        function setupCatCompanion() {
+            const cat = document.getElementById('cat-companion');
+            const bubble = document.getElementById('cat-speech-bubble');
+            let bubbleTimeout;
+            let animationTimeout;
+
+            if (!cat || !bubble) return;
+
+            cat.addEventListener('click', (event) => {
+                event.stopPropagation();
+
+                if (Math.random() < 0.01) {
+                    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank', 'noopener,noreferrer');
+                    return;
+                }
+
+                clearTimeout(bubbleTimeout);
+                clearTimeout(animationTimeout);
+                bubble.classList.remove('visible');
+
+                animationTimeout = setTimeout(() => {
+                    const randomIndex = Math.floor(Math.random() * catMessages.length);
+                    bubble.textContent = catMessages[randomIndex];
+                    bubble.classList.add('visible');
+                }, 100);
+
+                bubbleTimeout = setTimeout(() => {
+                    bubble.classList.remove('visible');
+                }, 6000);
+            });
+
+            document.addEventListener('click', () => {
+                if (bubble.classList.contains('visible')) {
+                    bubble.classList.remove('visible');
+                }
+            });
+        }
+
+        /* === YEAR === */
+        function updateYear() {
+            const el = document.getElementById('currentYear');
+            if (el) el.textContent = new Date().getFullYear();
+        }
+
+        /* === INIT === */
+        document.addEventListener('DOMContentLoaded', function () {
+            updateYear();
+            setupThemeToggle();
+            setupCatCompanion();
+            updateButtonGroupRadii();
+            window.addEventListener('resize', updateButtonGroupRadii);
+        });
+    </script>
 </head>
+
 <body>
 
-    <h1>Eriselda Goga</h1>
-    <p class="subtitle">Welcome to my website.</p>
+    <div class="page-wrapper">
+        <div class="profile-section">
+            <img src="/miscellaneous/profile.jpg" class="profile-photo" alt="Bredli Plaku">
+            <p class="profile-name">Bredli Plaku</p>
+            <p class="profile-subtitle">MSc in Structural Engineering</p>
+            <div class="profile-links">
+                <a href="https://about.bredliplaku.com/" target="_blank" rel="noopener noreferrer"
+                    aria-label="LinkedIn">
+                    <i class="fa-brands fa-square-linkedin"></i>
+                </a>
+                <a href="mailto:bplaku@epoka.edu.al" aria-label="Email">
+                    <i class="far fa-envelope"></i>
+                </a>
+            </div>
+        </div>
 
-    <a href="https://eriseldagoga.com/teaching" class="grid-btn" aria-label="Course Notes">
-        <span class="btn-part">📚</span>
-        <span class="btn-part">Course Notes</span>
-        <span class="btn-part">→</span>
-    </a>
+        <div class="button-groups">
+            <div class="button-group">
+                <a href="https://research.bredliplaku.com/" target="_blank" rel="noopener noreferrer">
+                    <div class="group-btn"><i class="fas fa-flask"></i> Research</div>
+                </a>
+                <a href="https://teaching.bredliplaku.com/" target="_blank" rel="noopener noreferrer">
+                    <div class="group-btn"><i class="fas fa-chalkboard-teacher"></i> Teaching</div>
+                </a>
+            </div>
+        </div>
+    </div>
 
+    <footer class="footer">
+        <div class="footer-tools">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Theme: Auto" title="Theme: Auto">
+                <i id="theme-toggle-icon" class="fas fa-adjust" aria-hidden="true"></i>
+            </button>
+        </div>
+        <p class="copyright"><i class="far fa-copyright"></i> 2023–<span id="currentYear"></span> Bredli Plaku. All
+            Rights Reserved.</p>
+    </footer>
+
+    <div id="cat-companion">
+        <div id="cat-speech-bubble"></div>
+        <img id="cat-image" src="https://leunghoicheng.com/assets/hero-section-animation.gif"
+            alt="A friendly cat companion">
+    </div>
 </body>
+
 </html>

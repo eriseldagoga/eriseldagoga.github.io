@@ -82,6 +82,10 @@
             min-height: 100vh;
             min-height: 100dvh;
             background: var(--bg-color);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         /* === LAYOUT === */
@@ -119,7 +123,7 @@
         }
 
         .profile-name {
-            font-size: 1.3em;
+            font-size: 2em;
             font-weight: 700;
             margin: 14px 0 4px 0;
             color: var(--text-color);
@@ -248,32 +252,27 @@
         }
 
         .theme-toggle {
-            width: 32px;
-            height: 32px;
-            padding: 0;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
-            background: var(--surface-color);
             color: var(--text-color);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            font-size: 0.85em;
-            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+            font-size: 1.25em;
+            /* Increased size to match the feel of the button before */
+            transition: transform 0.15s ease, color 0.2s ease;
             opacity: 0.8;
+            padding: 8px;
+            /* Give it a larger click target */
         }
 
         .theme-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            transform: scale(1.15);
             opacity: 1;
+            color: var(--primary-color);
         }
 
         .theme-toggle:active {
             transform: scale(0.95);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .social-links {
@@ -374,9 +373,7 @@
         }
 
         html[data-theme="dark"] .theme-toggle {
-            background: var(--dark-surface-light);
             color: var(--dark-text);
-            border-color: var(--dark-border);
         }
 
         html[data-theme="dark"] .footer {
@@ -446,9 +443,7 @@
             }
 
             html:not([data-theme="light"]) .theme-toggle {
-                background: var(--dark-surface-light);
                 color: var(--dark-text);
-                border-color: var(--dark-border);
             }
 
             html:not([data-theme="light"]) .footer {
@@ -515,11 +510,10 @@
         /* === THEME TOGGLE === */
         function setupThemeToggle() {
             const KEY = 'theme-preference';
-            const BTN = document.getElementById('theme-toggle');
             const ICON = document.getElementById('theme-toggle-icon');
-            if (!BTN || !ICON) return;
+            if (!ICON) return;
 
-            const icons = { auto: 'fas fa-adjust', light: 'far fa-sun', dark: 'far fa-moon' };
+            const icons = { auto: 'fa-solid fa-circle-half-stroke', light: 'fa-regular fa-sun', dark: 'fa-regular fa-moon' };
 
             const applyTheme = (theme) => {
                 document.documentElement.setAttribute('data-theme', theme);
@@ -535,13 +529,13 @@
             };
 
             const updateUI = (theme) => {
-                ICON.className = icons[theme] || icons.auto;
+                ICON.className = `theme-toggle ${icons[theme] || icons.auto}`;
                 const label = theme.charAt(0).toUpperCase() + theme.slice(1);
-                BTN.setAttribute('aria-label', `Theme: ${label}`);
-                BTN.title = `Theme: ${label}`;
+                ICON.setAttribute('aria-label', `Theme: ${label}`);
+                ICON.title = `Theme: ${label}`;
             };
 
-            BTN.addEventListener('click', () => {
+            ICON.addEventListener('click', () => {
                 const currentPref = localStorage.getItem(KEY) || 'auto';
                 const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 let newPref;
@@ -593,25 +587,24 @@
         <div class="profile-section">
             <img src="/miscellaneous/profile.jpg" class="profile-photo" alt="Eriselda Goga">
             <p class="profile-name">Eriselda Goga</p>
-            <p class="profile-subtitle">MSc in Mathematics</p>
+            <p class="profile-subtitle">Welcome to my website!</p>
             <div class="profile-links">
-                <a href="https://www.linkedin.com/in/eriselda-goga/" target="_blank" rel="noopener noreferrer"
-                    aria-label="LinkedIn">
+                <a href="https://www.linkedin.com/in/eriselda-goga/" aria-label="LinkedIn">
                     <i class="fa-brands fa-square-linkedin"></i>
                 </a>
                 <a href="mailto:egoga@epoka.edu.al" aria-label="Email">
-                    <i class="far fa-envelope"></i>
+                    <i class="fa-solid fa-envelope"></i>
                 </a>
             </div>
         </div>
 
         <div class="button-groups">
             <div class="button-group">
-                <a href="https://www.researchgate.net/profile/Eriselda-Goga" target="_blank" rel="noopener noreferrer">
-                    <div class="group-btn"><i class="fas fa-flask"></i> Research</div>
+                <a href="https://www.researchgate.net/profile/Eriselda-Goga">
+                    <div class="group-btn"><i class="fa-solid fa-flask"></i> Research</div>
                 </a>
-                <a href="https://eriseldagoga.com/teaching/" target="_blank" rel="noopener noreferrer">
-                    <div class="group-btn"><i class="fas fa-chalkboard-teacher"></i> Teaching</div>
+                <a href="https://eriseldagoga.com/teaching/">
+                    <div class="group-btn"><i class="fa-solid fa-chalkboard-user"></i> Teaching</div>
                 </a>
             </div>
         </div>
@@ -619,11 +612,11 @@
 
     <footer class="footer">
         <div class="footer-tools">
-            <button id="theme-toggle" class="theme-toggle" aria-label="Theme: Auto" title="Theme: Auto">
-                <i id="theme-toggle-icon" class="fas fa-adjust" aria-hidden="true"></i>
-            </button>
+            <i id="theme-toggle-icon" class="theme-toggle fa-solid fa-circle-half-stroke" aria-label="Theme: Auto"
+                title="Theme: Auto" aria-hidden="false" role="button" tabindex="0"></i>
         </div>
-        <p class="copyright"><i class="far fa-copyright"></i> 2026–<span id="currentYear"></span> Eriselda Goga. All
+        <p class="copyright"><i class="fa-regular fa-copyright"></i> 2026–<span id="currentYear"></span> Eriselda Goga.
+            All
             Rights Reserved.</p>
     </footer>
 </body>

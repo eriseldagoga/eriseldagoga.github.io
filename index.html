@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap"
         rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4dd5c549ad.js" crossorigin="anonymous"></script>
 
     <!-- Instant theme application to prevent flash -->
     <script>
@@ -199,7 +199,8 @@
                 background-color 0.25s ease;
         }
 
-        .group-btn i {
+        .group-btn i,
+        .group-btn svg {
             font-size: 1em;
             color: var(--primary-color);
             transition: color 0.25s ease;
@@ -358,7 +359,8 @@
             color: var(--dark-text);
         }
 
-        html[data-theme="dark"] .group-btn i {
+        html[data-theme="dark"] .group-btn i,
+        html[data-theme="dark"] .group-btn svg {
             color: #8c9eff;
         }
 
@@ -428,7 +430,8 @@
                 color: var(--dark-text);
             }
 
-            html:not([data-theme="light"]) .group-btn i {
+            html:not([data-theme="light"]) .group-btn i,
+            html:not([data-theme="light"]) .group-btn svg {
                 color: #8c9eff;
             }
 
@@ -529,8 +532,10 @@
             };
 
             const updateUI = (theme) => {
-                ICON.className = `theme-toggle ${icons[theme] || icons.auto}`;
+                const iconClass = icons[theme] || icons.auto;
                 const label = theme.charAt(0).toUpperCase() + theme.slice(1);
+                // Replace innerHTML so FontAwesome processes the fresh <i> tag
+                ICON.innerHTML = `<i class="${iconClass}" aria-hidden="true"></i>`;
                 ICON.setAttribute('aria-label', `Theme: ${label}`);
                 ICON.title = `Theme: ${label}`;
             };
@@ -612,8 +617,10 @@
 
     <footer class="footer">
         <div class="footer-tools">
-            <i id="theme-toggle-icon" class="theme-toggle fa-solid fa-circle-half-stroke" aria-label="Theme: Auto"
-                title="Theme: Auto" aria-hidden="false" role="button" tabindex="0"></i>
+            <span id="theme-toggle-icon" class="theme-toggle" aria-label="Theme: Auto" title="Theme: Auto" role="button"
+                tabindex="0">
+                <i class="fa-solid fa-circle-half-stroke" aria-hidden="false"></i>
+            </span>
         </div>
         <p class="copyright"><i class="fa-regular fa-copyright"></i> 2026–<span id="currentYear"></span> Eriselda Goga.
             All

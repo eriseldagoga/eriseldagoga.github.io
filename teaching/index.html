@@ -39,7 +39,7 @@
             --text-light: #ffffff;
             --gray-color: #bdbdbd;
 
-            --dark-bg: #121212;
+            --dark-bg: #000000;
             --dark-surface: #1e1e1e;
             --dark-surface-light: #2c2c2c;
             --dark-text: #e0e0e0;
@@ -620,6 +620,13 @@
         .group-material-card .material-card-actions button {
             border-radius: 8px;
             box-shadow: none;
+            padding: 5px 10px;
+            font-size: .8em;
+            min-width: auto;
+        }
+
+        .group-material-card .material-card-actions button:hover {
+            border-radius: 20px !important;
         }
 
         .group-material-card .material-card-actions button:first-child {
@@ -632,12 +639,6 @@
 
         .group-material-card .material-card-actions button:only-child {
             border-radius: 20px;
-        }
-
-        .group-material-card .material-card-actions button {
-            padding: 5px 10px;
-            font-size: .8em;
-            min-width: auto;
         }
 
         /* Search & sort */
@@ -1008,7 +1009,7 @@
             background-color: #FFF9C4;
             border-left: 5px solid #FBC02D;
             padding: 15px;
-            margin-top: 10px;
+            margin-top: 15px;
             border-radius: 10px;
             font-style: italic;
         }
@@ -2239,17 +2240,21 @@
             background: linear-gradient(135deg, var(--theme-secondary, var(--secondary-color)), var(--theme-tertiary, var(--tertiary-color))) !important;
         }
 
-        html[data-theme="dark"] .material-card,
-        html[data-theme="dark"] .project-group-card {
+        html[data-theme="dark"] .material-card {
             background: var(--dark-surface) !important;
             border-color: var(--dark-border) !important;
             color: var(--dark-text);
         }
 
-        html[data-theme="dark"] .material-card:hover,
-        html[data-theme="dark"] .project-group-card:hover {
+        html[data-theme="dark"] .project-group-card {
             background: var(--dark-surface-light) !important;
+            border-color: var(--dark-border) !important;
+            color: var(--dark-text);
+        }
+
+        html[data-theme="dark"] .project-group-card:hover {
             border-color: var(--primary-color) !important;
+            transition: all 0.4s ease-in-out;
         }
 
         html[data-theme="dark"] .material-card .material-title,
@@ -2264,7 +2269,7 @@
         }
 
         html[data-theme="dark"] .course-button {
-            background: var(--dark-surface) !important;
+            background: var(--dark-surface-light) !important;
             color: var(--dark-text) !important;
             border-color: var(--dark-border) !important;
         }
@@ -2504,17 +2509,21 @@
                 background: linear-gradient(135deg, var(--theme-secondary, var(--secondary-color)), var(--theme-tertiary, var(--tertiary-color))) !important;
             }
 
-            html:not([data-theme="light"]) .material-card,
-            html:not([data-theme="light"]) .project-group-card {
+            html:not([data-theme="light"]) .material-card {
                 background: var(--dark-surface) !important;
                 border-color: var(--dark-border) !important;
                 color: var(--dark-text);
             }
 
-            html:not([data-theme="light"]) .material-card:hover,
-            html:not([data-theme="light"]) .project-group-card:hover {
+            html:not([data-theme="light"]) .project-group-card {
                 background: var(--dark-surface-light) !important;
+                border-color: var(--dark-border) !important;
+                color: var(--dark-text);
+            }
+
+            html:not([data-theme="light"]) .project-group-card:hover {
                 border-color: var(--primary-color) !important;
+                transition: all 0.4s ease-in-out;
             }
 
             html:not([data-theme="light"]) .material-card .material-title,
@@ -2529,7 +2538,7 @@
             }
 
             html:not([data-theme="light"]) .course-button {
-                background: var(--dark-surface) !important;
+                background: var(--dark-surface-light) !important;
                 color: var(--dark-text) !important;
                 border-color: var(--dark-border) !important;
             }
@@ -3521,7 +3530,7 @@
             const updateThemeColorMeta = () => {
                 const meta = document.querySelector('meta[name="theme-color"]');
                 if (meta) {
-                    meta.setAttribute('content', currentIsDark() ? '#121212' : '#ffffff');
+                    meta.setAttribute('content', currentIsDark() ? '#000000' : '#ffffff');
                 }
             };
 

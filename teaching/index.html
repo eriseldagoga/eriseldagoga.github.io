@@ -4576,7 +4576,7 @@
             };
 
             let sortOrders = JSON.parse(localStorage.getItem('courseSortOrders')) || {};
-            let currentOrder = sortOrders[currentCourse] || 'asc';
+            let currentOrder = sortOrders[currentCourse] || 'desc';
 
             sortModules(currentOrder);
             updateButtonState(currentOrder);

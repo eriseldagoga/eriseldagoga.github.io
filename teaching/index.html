@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap"
         rel="stylesheet">
-    <script src="https://kit.fontawesome.com/4dd5c549ad.js" crossorigin="anonymous"></script>
+
 
     <script>
         (function () {
@@ -40,8 +40,8 @@
             --gray-color: #bdbdbd;
 
             --dark-bg: #000000;
-            --dark-surface: #1e1e1e;
-            --dark-surface-light: #2c2c2c;
+            --dark-surface: #121212;
+            --dark-surface-light: #1e1e1e;
             --dark-text: #e0e0e0;
             --dark-text-muted: #9e9e9e;
             --dark-border: #333333;
@@ -103,7 +103,9 @@
         .notification-close,
         .material-card,
         .project-group-card,
-        .social-links a {
+        .social-links a,
+        #cat-image,
+        #cat-speech-bubble {
             transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
         }
 
@@ -205,6 +207,10 @@
             color: white;
             min-height: 38px;
             line-height: 1;
+        }
+
+        .week-counter {
+            font-size: inherit;
         }
 
         .info-item.first-in-row {
@@ -310,11 +316,253 @@
         }
 
         .progress {
-            width: 60%;
             height: 100%;
             background-color: var(--success-color);
+            width: 0%;
             transition: width 0.5s ease-in-out;
         }
+
+        /* --- Announcement Banner Styles --- */
+        .announcement-banner {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .announcement-row {
+            display: flex;
+            flex-direction: column;
+            /* Stack actions directly under the card */
+            align-items: stretch;
+            gap: 8px;
+            /* Slightly tighter gap to the external actions */
+            width: 100%;
+        }
+
+        .announcement-row-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow-x: visible;
+            padding: 4px;
+            margin: -4px -4px 0 -4px;
+        }
+
+        .announcements-collapsed {
+            overflow-y: clip;
+            /* clips height for animation but allows horizontal swiping */
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+
+        .announcement-row-group .announcement-row.first-in-col .announcement-card {
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        .announcement-row-group .announcement-row.last-in-col .announcement-card {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .announcement-row-group .announcement-row.middle-in-col .announcement-card {
+            border-radius: 4px;
+        }
+
+        .announcement-row-group .announcement-row.only-in-col .announcement-card {
+            border-radius: 12px;
+        }
+
+        .show-more-announcements {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: max-content;
+            padding: 0;
+            margin: 0 auto !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .show-more-announcements.btn-hover-fx.waves-effect {
+            /* Explicitly undo global button libraries if they hook in */
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .show-more-announcements:hover {
+            color: var(--primary-color) !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        .announcement-card {
+            flex: 1;
+            background-color: var(--card-background);
+            border: 1px solid rgba(0, 0, 0, 0.07);
+            border-radius: 12px;
+            padding: 0 0 0 8px;
+            color: var(--text-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            font-size: 0.95em;
+            display: flex;
+            flex-direction: row;
+            min-width: 0;
+            transition: box-shadow 0.2s ease, transform 0.2s ease, border-radius 0.3s ease;
+            overflow: hidden;
+            cursor: default;
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
+        }
+
+        .announcement-card::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 16px;
+            bottom: 16px;
+            width: 4px;
+            background-color: var(--card-accent, var(--primary-color));
+            border-radius: 4px;
+        }
+
+        .announcement-icon-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 20px;
+            width: 45px;
+            flex-shrink: 0;
+            gap: 4px;
+            background-color: transparent;
+        }
+
+        .announcement-prof-name {
+            font-size: 0.65em;
+            text-align: center;
+            line-height: 1;
+            padding: 0 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 48px;
+        }
+
+        .announcement-icon-wrapper .announcement-icon {
+            font-size: 1.4rem;
+        }
+
+        .announcement-icon-wrapper .announcement-avatar {
+            width: 30px;
+            height: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .announcement-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 12px 12px 12px 6px;
+            flex: 1;
+        }
+
+        .announcement-row>.material-card-actions {
+            align-self: flex-end;
+            margin-right: 4px;
+            margin-bottom: 6px;
+        }
+
+        .project-module-description {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 0 4px;
+            text-align: justify;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+        }
+
+        .announcement-row.swipe-dismissing {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            transform: translateX(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .announcement-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-right: 5px;
+        }
+
+        .announcement-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .announcement-header-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
+        }
+
+        .announcement-icon {
+            font-size: 1.2em;
+        }
+
+        .announcement-title {
+            font-weight: 600;
+        }
+
+        .announcement-date {
+            font-size: 0.85em;
+            font-weight: 500;
+            text-align: right;
+            padding-top: 2px;
+            padding-right: 2px;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
+        }
+
+        .announcement-text {
+            line-height: 1.5;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            user-select: none;
+        }
+
+        /* ---------------------------------- */
 
         /* Evaluation */
         .evaluation-display {
@@ -528,6 +776,33 @@
             border-top: 1px solid #e0e0e0;
         }
 
+        @media (min-width: 769px) {
+            .project-groups-grid.desktop-scrollable {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 15px;
+            }
+
+            .project-groups-grid.desktop-scrollable::-webkit-scrollbar {
+                height: 8px;
+            }
+
+            .project-groups-grid.desktop-scrollable::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .project-groups-grid.desktop-scrollable::-webkit-scrollbar-thumb {
+                background-color: #ccc;
+                border-radius: 20px;
+            }
+
+            .project-groups-grid.desktop-scrollable .project-group-card {
+                flex: 0 0 320px;
+                max-width: 320px;
+            }
+        }
+
         .project-group-card {
             background: #fafafa;
             border: 1px solid #e0e0e0;
@@ -574,6 +849,11 @@
             text-decoration: underline;
             text-decoration-thickness: 2px;
             text-decoration-color: var(--secondary-color);
+        }
+
+        .student-status-warning {
+            color: var(--warning-color);
+            font-weight: 700;
         }
 
         /* Group files */
@@ -640,6 +920,7 @@
         .group-material-card .material-card-actions button:only-child {
             border-radius: 20px;
         }
+
 
         /* Search & sort */
         .search-container {
@@ -898,15 +1179,18 @@
             transition: border-radius 0.25s cubic-bezier(.4, 0, .2, 1), box-shadow 0.2s ease, background-color 0.25s ease;
         }
 
-        .material-card-actions button:first-child {
+        .material-card-actions button:first-child,
+        .material-card-actions button.first-in-row {
             border-radius: 20px 8px 8px 20px;
         }
 
-        .material-card-actions button:last-child {
+        .material-card-actions button:last-child,
+        .material-card-actions button.last-in-row {
             border-radius: 8px 20px 20px 8px;
         }
 
-        .material-card-actions button:only-child {
+        .material-card-actions button:only-child,
+        .material-card-actions button.only-in-row {
             border-radius: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         }
@@ -966,6 +1250,15 @@
             background-color: #388e3c;
         }
 
+        .icon-only-btn {
+            padding: 10px !important;
+            min-width: 40px !important;
+            display: inline-flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            flex: 0 0 auto !important;
+        }
+
         .btn-orange {
             background-color: #ef6c00;
             color: #fff;
@@ -994,14 +1287,25 @@
             background-color: #6a1b9a;
         }
 
+        .btn-red {
+            background-color: #e53935;
+            color: #fff;
+            border-color: #c62828;
+        }
+
+        .btn-red:hover {
+            background-color: #d32f2f;
+        }
+
         .btn-primary {
             background-color: var(--primary-color);
             border-color: rgba(0, 0, 0, 0.2);
         }
 
-        #timetable-btn.active {
-            background: var(--accent-color);
-            transform: scale(0.95);
+        .timetable-btn.active {
+            background: var(--primary-dark) !important;
+            transform: scale(0.97);
+            border-color: rgba(0, 0, 0, 0.2) !important;
         }
 
         /* Fun fact card */
@@ -1012,6 +1316,12 @@
             margin-top: 15px;
             border-radius: 10px;
             font-style: italic;
+            text-align: justify;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
         }
 
         /* Course actions */
@@ -1171,14 +1481,18 @@
 
         .course-tabs-wrapper {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            overflow-x: auto;
             gap: 5px 2px;
             flex: 1;
             align-items: center;
+            padding-top: 5px;
+            padding-bottom: 8px;
             scrollbar-width: none;
             /* Firefox */
             -ms-overflow-style: none;
             /* IE/Edge */
+            -webkit-overflow-scrolling: touch;
         }
 
         .course-tabs-wrapper::-webkit-scrollbar,
@@ -1388,6 +1702,22 @@
             transition: opacity 0.5s;
         }
 
+        /* Scroll faders */
+        .is-scrollable {
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
+        }
+
+        .is-scrollable.at-start {
+            -webkit-mask-image: linear-gradient(to right, black 0%, black calc(100% - 15px), transparent 100%);
+            mask-image: linear-gradient(to right, black 0%, black calc(100% - 15px), transparent 100%);
+        }
+
+        .is-scrollable.at-end {
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15px, black 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 15px, black 100%);
+        }
+
         .loading-spinner {
             width: 60px;
             height: 60px;
@@ -1428,7 +1758,7 @@
             }
 
             100% {
-                transform: rotate(360deg);
+                transform: rotate(180deg);
             }
         }
 
@@ -1539,7 +1869,7 @@
             position: fixed;
             top: 50%;
             left: 0;
-            width: 260px;
+            width: 230px;
             height: auto;
             max-height: calc(100vh - 40px);
             padding: 60px 30px 20px 15px;
@@ -1661,6 +1991,9 @@
 
         /* Responsive: 1400px */
         @media (max-width: 1400px) {
+            #cat-companion {
+                display: none;
+            }
 
             #side-nav-toggle,
             .side-nav-container {
@@ -1847,8 +2180,45 @@
             }
 
             .fun-fact {
-                font-size: 0.85em;
+                font-size: 0.75em;
                 margin-top: 5px;
+            }
+
+            .show-more-announcements {
+                font-size: 0.6em;
+            }
+
+
+            .announcement-date {
+                font-size: 0.65em;
+                padding-top: 4px;
+            }
+
+            .announcement-prof-name {
+                font-size: 0.5em;
+            }
+
+            .announcement-content-wrapper {
+                padding: 10px 12px 10px 6px;
+                gap: 2px;
+            }
+
+            .announcement-icon-wrapper {
+                width: 42px;
+                padding-top: 20px;
+            }
+
+            .announcement-icon-wrapper .announcement-icon {
+                font-size: 1.2rem;
+            }
+
+            .announcement-icon-wrapper .announcement-avatar {
+                width: 26px;
+                height: 26px;
+            }
+
+            .announcement-row {
+                gap: 6px;
             }
 
             .module-header {
@@ -2000,7 +2370,6 @@
             }
 
             .week-counter {
-                font-size: .8em;
                 padding: 0;
                 display: inline;
             }
@@ -2019,7 +2388,8 @@
                 min-height: 52px;
             }
 
-            .course-tabs-wrapper {
+            .course-tabs-wrapper,
+            .skeleton-tabs-wrapper {
                 display: flex;
                 flex-wrap: nowrap;
                 overflow-x: auto;
@@ -2035,7 +2405,8 @@
             }
 
             .course-tabs-wrapper::-webkit-scrollbar,
-            .course-buttons-container::-webkit-scrollbar {
+            .course-buttons-container::-webkit-scrollbar,
+            .skeleton-tabs-wrapper::-webkit-scrollbar {
                 display: none;
             }
 
@@ -2078,6 +2449,10 @@
                 flex-wrap: nowrap;
                 gap: 2px;
                 padding-bottom: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                margin-left: -15px;
+                margin-right: -15px;
                 margin-bottom: 10px;
                 -webkit-overflow-scrolling: touch;
             }
@@ -2104,23 +2479,6 @@
             .module-header {
                 flex-direction: column;
                 align-items: flex-start;
-            }
-
-
-            /* Scroll faders */
-            .is-scrollable {
-                -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
-                mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
-            }
-
-            .is-scrollable.at-start {
-                -webkit-mask-image: linear-gradient(to right, black calc(100% - 15px), transparent 100%);
-                mask-image: linear-gradient(to right, black calc(100% - 15px), transparent 100%);
-            }
-
-            .is-scrollable.at-end {
-                -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15px, black 100%);
-                mask-image: linear-gradient(to right, transparent 0%, black 15px, black 100%);
             }
         }
 
@@ -2264,6 +2622,7 @@
 
         html[data-theme="dark"] .material-card .material-description,
         html[data-theme="dark"] .project-group-description,
+        html[data-theme="dark"] .project-module-description,
         html[data-theme="dark"] .student-list li {
             color: var(--dark-text-muted) !important;
         }
@@ -2404,6 +2763,55 @@
             color: var(--dark-text);
         }
 
+        /* UNIFIED ANNOUNCEMENT DARK MODE (MANUAL) */
+        html[data-theme="dark"] .clear-all-announcements:hover,
+        html[data-theme="dark"] .announcement-dismiss:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        html[data-theme="dark"] .show-more-announcements {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        html[data-theme="dark"] .show-more-announcements:hover {
+            color: var(--primary-color) !important;
+        }
+
+        html[data-theme="dark"] .announcement-card {
+            background-color: var(--dark-surface-light);
+            border-color: var(--dark-border);
+            border-left-color: var(--card-accent, var(--primary-color)) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            color: var(--dark-text);
+        }
+
+
+        /* UNIFIED ANNOUNCEMENT DARK MODE (AUTO) */
+        @media (prefers-color-scheme: dark) {
+
+            html:not([data-theme="light"]) .clear-all-announcements:hover,
+            html:not([data-theme="light"]) .announcement-dismiss:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            html:not([data-theme="light"]) .show-more-announcements {
+                color: rgba(255, 255, 255, 0.6) !important;
+            }
+
+            html:not([data-theme="light"]) .show-more-announcements:hover {
+                color: var(--primary-color) !important;
+            }
+
+            html:not([data-theme="light"]) .announcement-card {
+                background-color: var(--dark-surface-light);
+                border-color: var(--dark-border);
+                border-left-color: var(--card-accent, var(--primary-color)) !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                color: var(--dark-text);
+            }
+
+        }
+
         html[data-theme="dark"] .skeleton-material-card {
             border-color: var(--dark-border) !important;
         }
@@ -2422,7 +2830,8 @@
         so the dynamic backend colors aren't overridden
         */
 
-        html[data-theme="dark"] .side-nav-container::-webkit-scrollbar-thumb {
+        html[data-theme="dark"] .side-nav-container::-webkit-scrollbar-thumb,
+        html[data-theme="dark"] .project-groups-grid.desktop-scrollable::-webkit-scrollbar-thumb {
             background-color: var(--dark-border);
         }
 
@@ -2533,6 +2942,7 @@
 
             html:not([data-theme="light"]) .material-card .material-description,
             html:not([data-theme="light"]) .project-group-description,
+            html:not([data-theme="light"]) .project-module-description,
             html:not([data-theme="light"]) .student-list li {
                 color: var(--dark-text-muted) !important;
             }
@@ -2707,6 +3117,31 @@
                 color: var(--dark-text);
             }
 
+            html:not([data-theme="light"]) .clear-all-announcements:hover,
+            html:not([data-theme="light"]) .announcement-dismiss:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            html:not([data-theme="light"]) .show-more-announcements {
+                border-color: rgba(255, 255, 255, 0.15);
+            }
+
+            html:not([data-theme="light"]) .show-more-announcements:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                border-color: rgba(255, 255, 255, 0.3);
+            }
+
+            html:not([data-theme="light"]) .announcement-card {
+                background-color: var(--dark-surface-light);
+                border-color: var(--dark-border);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                color: var(--dark-text);
+            }
+
+            html:not([data-theme="light"]) .announcement-card:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+
             html:not([data-theme="light"]) .iframe-loader::after {
                 border-color: var(--dark-border) transparent var(--dark-border) transparent;
             }
@@ -2729,7 +3164,8 @@
             so the dynamic backend colors aren't overridden
             */
 
-            html:not([data-theme="light"]) .side-nav-container::-webkit-scrollbar-thumb {
+            html:not([data-theme="light"]) .side-nav-container::-webkit-scrollbar-thumb,
+            html:not([data-theme="light"]) .project-groups-grid.desktop-scrollable::-webkit-scrollbar-thumb {
                 background-color: var(--dark-border);
             }
         }
@@ -2781,6 +3217,38 @@
             transform: translateX(-100%);
             background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
             animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes skeleton-spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(180deg);
+            }
+        }
+
+        .skeleton-spinner-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        #spinner-image {
+            width: 150px;
+            height: 2%;
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+
+        #spinner-image.loaded {
+            opacity: 1;
         }
 
         .main-content-wrapper {
@@ -2868,17 +3336,36 @@
 
         .skeleton-info-grid {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 2px;
             margin-top: 15px;
             border-radius: 10px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .skeleton-info-grid::-webkit-scrollbar {
+            display: none;
         }
 
         .skeleton-info-item {
-            height: 40px;
-            flex: 1 1 140px;
-            border-radius: 10px;
+            height: 30px;
+            flex: 0 0 140px;
             background: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        .skeleton-info-item:first-child {
+            border-radius: 10px 4px 4px 10px;
+        }
+
+        .skeleton-info-item:last-child {
+            border-radius: 4px 10px 10px 4px;
+        }
+
+        .skeleton-info-item:not(:first-child):not(:last-child) {
+            border-radius: 4px;
         }
 
         .skeleton-progress {
@@ -2890,14 +3377,25 @@
 
         .skeleton-actions {
             display: flex;
+            overflow-x: auto;
+            flex-wrap: nowrap;
             gap: 2px;
-            margin-bottom: 20px;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .skeleton-actions::-webkit-scrollbar {
+            display: none;
         }
 
         .skeleton-button {
             height: 40px;
             width: 120px;
             border-radius: 8px;
+            flex: 0 0 auto;
         }
 
         .skeleton-button:first-child {
@@ -2954,6 +3452,7 @@
             height: 40px;
             width: 100px;
             border-radius: 8px;
+            flex: 0 0 100px;
         }
 
         .skeleton-course-button:first-child {
@@ -2996,9 +3495,9 @@
                 height: 35px;
             }
 
-            .course-buttons-container,
             .skeleton-info-grid,
-            .skeleton-actions {
+            .skeleton-actions,
+            .skeleton-tabs-wrapper {
                 display: flex;
                 flex-wrap: nowrap;
                 overflow-x: auto;
@@ -3007,9 +3506,9 @@
                 scrollbar-width: none;
             }
 
-            .course-buttons-container::-webkit-scrollbar,
             .skeleton-info-grid::-webkit-scrollbar,
-            .skeleton-actions::-webkit-scrollbar {
+            .skeleton-actions::-webkit-scrollbar,
+            .skeleton-tabs-wrapper::-webkit-scrollbar {
                 display: none;
             }
 
@@ -3075,14 +3574,170 @@
         html[data-theme="dark"] .skeleton-course-button {
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
+
+        /* --- Cat Companion Removed --- */
+
+        /* ========================
+           Announcements Subscribe Modal
+           ======================== */
+        #notif-confirm-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0);
+            backdrop-filter: blur(0px);
+            opacity: 0;
+            transition: background 0.3s ease, backdrop-filter 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        #notif-confirm-modal.show {
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(6px);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .notif-modal-card {
+            background: #ffffff;
+            color: #222222;
+            border: 1px solid #dddddd;
+            border-radius: 16px;
+            padding: 24px 22px 20px;
+            max-width: 400px;
+            width: 88%;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+            transform: scale(0.9) translateY(10px);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+        }
+
+        #notif-confirm-modal.show .notif-modal-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .notif-modal-card h3 {
+            margin: 0 0 10px;
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #222222;
+        }
+
+        .notif-modal-card h3 i {
+            margin-right: 6px;
+            color: var(--primary-color, #ef6c00);
+        }
+
+        .notif-modal-card p {
+            margin: 0 0 18px;
+            font-size: 0.84em;
+            color: #666666;
+            line-height: 1.55;
+        }
+
+        .notif-modal-card p strong {
+            color: var(--primary-color, #ef6c00);
+        }
+
+        .notif-modal-btns {
+            display: flex;
+            gap: 2px;
+        }
+
+        #notif-cancel-btn {
+            flex: 1;
+            border-radius: 20px 8px 8px 20px !important;
+            background: transparent !important;
+            color: #666 !important;
+            border: 1.5px solid #cccccc !important;
+            box-shadow: none !important;
+        }
+
+        #notif-cancel-btn:hover {
+            background: rgba(0, 0, 0, 0.05) !important;
+            border-color: #aaaaaa !important;
+            border-radius: 20px !important;
+        }
+
+        #notif-enable-btn,
+        #notif-unsubscribe-btn {
+            flex: 1;
+            border-radius: 8px 20px 20px 8px !important;
+        }
+
+        #notif-enable-btn:hover,
+        #notif-unsubscribe-btn:hover {
+            border-radius: 20px !important;
+        }
+
+        /* Dark mode — auto (system preference) */
+        @media (prefers-color-scheme: dark) {
+            html:not([data-theme="light"]) .notif-modal-card {
+                background: var(--dark-surface-light);
+                color: var(--dark-text);
+                border-color: var(--dark-border);
+                box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+            }
+
+            html:not([data-theme="light"]) .notif-modal-card h3 {
+                color: var(--dark-text);
+            }
+
+            html:not([data-theme="light"]) .notif-modal-card p {
+                color: var(--dark-text-muted);
+            }
+
+            html:not([data-theme="light"]) #notif-cancel-btn {
+                color: var(--dark-text-muted) !important;
+                border-color: var(--dark-border) !important;
+            }
+
+            html:not([data-theme="light"]) #notif-cancel-btn:hover {
+                background: rgba(255, 255, 255, 0.06) !important;
+                border-color: rgba(255, 255, 255, 0.25) !important;
+                border-radius: 20px !important;
+            }
+        }
+
+        /* Dark mode — manually forced */
+        html[data-theme="dark"] .notif-modal-card {
+            background: var(--dark-surface-light);
+            color: var(--dark-text);
+            border-color: var(--dark-border);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+        }
+
+        html[data-theme="dark"] .notif-modal-card h3 {
+            color: var(--dark-text);
+        }
+
+        html[data-theme="dark"] .notif-modal-card p {
+            color: var(--dark-text-muted);
+        }
+
+        html[data-theme="dark"] #notif-cancel-btn {
+            color: var(--dark-text-muted) !important;
+            border-color: var(--dark-border) !important;
+        }
+
+        html[data-theme="dark"] #notif-cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+            border-radius: 20px !important;
+        }
     </style>
+    <script src="https://kit.fontawesome.com/4dd5c549ad.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="is-loading">
 
     <div id="side-nav-container" class="side-nav-container" style="display: none;">
         <button id="side-nav-toggle" title="Toggle Navigation">
-            <i class="fas fa-chevron-left"></i>
+            <i class="fa-solid fa-chevron-left"></i>
         </button>
     </div>
 
@@ -3090,12 +3745,17 @@
 
 
         <div id="skeleton-loader">
+            <div class="skeleton-spinner-container">
+                <img src="" alt="Loading..." id="spinner-image">
+            </div>
             <div class="container">
                 <div class="course-buttons-container">
-                    <div class="skeleton skeleton-course-button"></div>
-                    <div class="skeleton skeleton-course-button"></div>
-                    <div class="skeleton skeleton-course-button"></div>
-                    <div class="skeleton skeleton-course-button"></div>
+                    <div class="skeleton-tabs-wrapper" style="display: flex; gap: 2px;">
+                        <div class="skeleton skeleton-course-button"></div>
+                        <div class="skeleton skeleton-course-button"></div>
+                        <div class="skeleton skeleton-course-button"></div>
+                        <div class="skeleton skeleton-course-button"></div>
+                    </div>
                 </div>
                 <div class="skeleton-header">
                     <div class="skeleton skeleton-h2"></div>
@@ -3105,10 +3765,14 @@
                         <div class="skeleton skeleton-info-item"></div>
                         <div class="skeleton skeleton-info-item"></div>
                         <div class="skeleton skeleton-info-item"></div>
+                        <div class="skeleton skeleton-info-item"></div>
+                        <div class="skeleton skeleton-info-item"></div>
                     </div>
                     <div class="skeleton skeleton-progress"></div>
                 </div>
                 <div class="skeleton-actions">
+                    <div class="skeleton skeleton-button"></div>
+                    <div class="skeleton skeleton-button"></div>
                     <div class="skeleton skeleton-button"></div>
                     <div class="skeleton skeleton-button"></div>
                     <div class="skeleton skeleton-button"></div>
@@ -3125,15 +3789,15 @@
                 <h1 id="course-title">Please wait...</h1>
                 <div class="course-info" id="course-info">
                     <div id="professors-container"></div>
-                    <span class="info-item"><i class="fas fa-calendar-check"></i> <span
+                    <span class="info-item"><i class="fa-solid fa-calendar-check"></i> <span
                             id="course-semester">Loading...</span></span>
-                    <span class="info-item"><i class="fas fa-graduation-cap"></i> <span
+                    <span class="info-item"><i class="fa-solid fa-graduation-cap"></i> <span
                             id="course-level">Loading...</span></span>
-                    <span id="course-type-container" class="info-item"><i class="fas fa-exclamation-circle"></i>
+                    <span id="course-type-container" class="info-item"><i class="fa-solid fa-exclamation-circle"></i>
                         <span id="course-type">Loading...</span></span>
-                    <span class="info-item"><i class="fas fa-trophy"></i> <span
+                    <span class="info-item"><i class="fa-solid fa-trophy"></i> <span
                             id="course-credits">Loading...</span></span>
-                    <span class="info-item"><i class="far fa-clock fa-spin"></i>
+                    <span class="info-item"><i class="fa-regular fa-clock fa-spin"></i>
                         <span class="week-counter" id="week-counter"></span>
                     </span>
                 </div>
@@ -3141,6 +3805,7 @@
                 <div class="progress-bar">
                     <div class="progress" id="progress-bar"></div>
                 </div>
+
 
                 <div id="evaluation-display" class="evaluation-display" style="display: none;">
                     <div class="distribution-wrapper">
@@ -3165,11 +3830,13 @@
                 </div>
             </div>
 
+            <div id="announcement-banner" class="announcement-banner" style="display: none;"></div>
+
             <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
+                <i class="fa-solid fa-search search-icon"></i>
                 <input type="search" id="search-bar" placeholder="Search">
                 <button id="sort-button" class="sort-button" title="Sort Modules">
-                    <span class="sort-icon-wrap"><i class="fas fa-sort-amount-down"></i></span>
+                    <i class="fa-solid fa-sort-amount-down"></i>
                 </button>
             </div>
 
@@ -3183,30 +3850,33 @@
                 <a href="https://eriseldagoga.com/" rel="noopener noreferrer"><i class="fa-regular fa-house"
                         title="Home"></i></a>
                 <a href="https://eis.epoka.edu.al/cv/fullcv/486" target="_blank" rel="noopener noreferrer"><i
-                        class="far fa-id-card" title="Curriculum Vitae"></i></a>
-                <a href="mailto:bplaku@epoka.edu.al" target="_blank" rel="noopener noreferrer"><i
-                        class="far fa-envelope" title="Contact Email"></i></a>
+                        class="fa-regular fa-id-card" title="Curriculum Vitae"></i></a>
+                <a href="mailto:egoga@epoka.edu.al" target="_blank" rel="noopener noreferrer"><i
+                        class="fa-regular fa-envelope" title="Contact Email"></i></a>
+
                 <button id="theme-toggle" class="theme-toggle" aria-label="Theme: Auto" title="Theme: Auto">
-                    <i class="fas fa-adjust" aria-hidden="true"></i>
+                    <i id="theme-toggle-icon" class="fa-solid fa-adjust" aria-hidden="true"></i>
                 </button>
             </div>
             <p style="font-size:0.8em; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">
-                <i class="far fa-copyright"></i> 2026-<span id="currentYear"></span> Eriselda Goga. All Rights
+                <i class="fa-regular fa-copyright"></i> 2025-<span id="currentYear"></span> Eriselda Goga. All Rights
                 Reserved.
             </p>
         </footer>
     </div>
 
     <div id="mobile-fab" class="mobile-fab" style="display: none;">
-        <i class="fas fa-stream"></i>
+        <i class="fa-solid fa-stream"></i>
     </div>
     <div id="fab-overlay" class="fab-overlay"></div>
     <div id="mobile-fab-menu" class="mobile-fab-menu"></div>
 
+    <!-- Cat Companion Removed -->
+
     <script>
         // Configuration
         const ACTIVE_SPREADSHEET_ID = '1jvifdLlGzdshKyhdbzpYYnO37cpoSAz4JVE48IuF82c';
-        const ARCHIVE_SPREADSHEET_ID = '1jvifdLlGzdshKyhdbzpYYnO37cpoSAz4JVE48IuF82c';
+        const ARCHIVE_SPREADSHEET_ID = '';
         let currentSpreadsheetId = ACTIVE_SPREADSHEET_ID;
         let isArchiveMode = false;
 
@@ -3274,6 +3944,29 @@
             }, 1500);
         }
 
+        // --- Random Spinner GIF Logic ---
+        const spinnerGifs = [
+        ];
+
+        function setRandomSpinnerGif() {
+            const spinnerImg = document.getElementById('spinner-image');
+            if (!spinnerImg) return;
+
+            let chosenGif = sessionStorage.getItem('spinnerGifUrl');
+
+            if (!chosenGif) {
+                const randomIndex = Math.floor(Math.random() * spinnerGifs.length);
+                chosenGif = spinnerGifs[randomIndex];
+                sessionStorage.setItem('spinnerGifUrl', chosenGif);
+            }
+
+            spinnerImg.onload = () => {
+                spinnerImg.classList.add('loaded');
+            };
+
+            spinnerImg.src = chosenGif;
+        }
+
         function setupMobileFab() {
             const fab = document.getElementById('mobile-fab');
             const overlay = document.getElementById('fab-overlay');
@@ -3313,11 +4006,13 @@
         }
 
         function init() {
+            setRandomSpinnerGif();
             updateYear();
             initContainers();
             setupMobileFab();
             applyClickFeedback('#sort-button');
             setupThemeToggle();
+            // setupCatCompanion();
             checkUrlForCourse();
             loadModuleStates();
             setupSideNavToggle();
@@ -3334,6 +4029,11 @@
 
             // Initialize backend and load courses
             initBackend();
+
+            // Initialize faders immediately so skeletons have the fade effect
+            setTimeout(() => {
+                initializeScrollFaders();
+            }, 50);
 
             window.addEventListener('scroll', updateActiveNavLink);
 
@@ -3384,10 +4084,14 @@
             if (courseButtons) {
                 courseButtons.style.minHeight = courseButtons.offsetHeight + 'px';
                 courseButtons.innerHTML = `
-                    <div class="skeleton skeleton-course-button"></div>
-                    <div class="skeleton skeleton-course-button"></div>
-                    <div class="skeleton skeleton-course-button"></div>
-                    <div class="skeleton skeleton-course-button"></div>
+                    <div class="skeleton-tabs-wrapper" style="display: flex; gap: 2px;">
+                        <div class="skeleton skeleton-course-button"></div>
+                        <div class="skeleton skeleton-course-button"></div>
+                        <div class="skeleton skeleton-course-button"></div>
+                        <div class="skeleton skeleton-course-button"></div>
+                        <div class="skeleton skeleton-course-button"></div>
+                        <div class="skeleton skeleton-course-button"></div>
+                    </div>
                 `;
             }
             // -------------------------------------------------------------------
@@ -3490,12 +4194,14 @@
             }
         }
 
+        // Cat Companion functionality removed
+
         /* Theme selector logic */
         function setupThemeToggle() {
             const KEY = 'theme-preference';
-            // BTN is the outer <button> — its id survives FontAwesome SVG replacement
+            const ICON = document.getElementById('theme-toggle-icon');
             const BTN = document.getElementById('theme-toggle');
-            const icons = { auto: 'fas fa-adjust', light: 'far fa-sun', dark: 'far fa-moon' };
+            const icons = { auto: 'fa-solid fa-adjust', light: 'fa-regular fa-sun', dark: 'fa-regular fa-moon' };
 
             const getSaved = () => localStorage.getItem(KEY) || 'auto';
 
@@ -3512,12 +4218,18 @@
             };
 
             const updateUI = (pref) => {
+                const oldIcon = document.getElementById('theme-toggle-icon');
+                if (oldIcon) {
+                    const i = document.createElement('i');
+                    i.id = 'theme-toggle-icon';
+                    i.className = icons[pref] || icons.auto;
+                    i.setAttribute('aria-hidden', 'true');
+                    oldIcon.replaceWith(i);
+                }
                 if (BTN) {
                     const label = pref.charAt(0).toUpperCase() + pref.slice(1);
                     BTN.setAttribute('aria-label', `Theme: ${label}`);
                     BTN.title = `Theme: ${label}`;
-                    // Replace innerHTML so FontAwesome processes the fresh <i>
-                    BTN.innerHTML = `<i class="${icons[pref] || icons.auto}" aria-hidden="true"></i>`;
                 }
             };
 
@@ -3759,7 +4471,7 @@
         }
 
         function initializeScrollFaders() {
-            const scrollContainers = document.querySelectorAll('.course-buttons-container, .course-tabs-wrapper, .course-info, .course-actions, .materials-grid, .project-groups-grid, .skeleton-actions');
+            const scrollContainers = document.querySelectorAll('.course-buttons-container, .course-tabs-wrapper, .course-info, .course-actions, .materials-grid, .project-groups-grid, .skeleton-actions, .skeleton-tabs-wrapper, .skeleton-info-grid');
             scrollContainers.forEach(el => {
                 // Check state on load
                 updateScrollFaders(el);
@@ -3889,7 +4601,7 @@
             // This function will change the icon and trigger the "pop-in" animation
             const animateIn = () => {
                 decorationContainer.dataset.currentIcon = newIconClass;
-                decorationContainer.innerHTML = `<i class="fas ${newIconClass}"></i>`;
+                decorationContainer.innerHTML = `<i class="fa-solid ${newIconClass}"></i>`;
                 decorationContainer.style.animation = 'decor-pop-in 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards';
             };
 
@@ -3937,94 +4649,70 @@
             }
         }
 
-        let timetableTransitionTimeout = null;
-
-        function toggleTimetable(btnEl, tId, cId, defaultName) {
+        function toggleTimetable(index, btnName) {
             const timetableContainer = document.getElementById("timetable-container");
             const iframeContainer = document.getElementById("iframe-container");
             const iframe = document.getElementById('timetable-iframe');
 
+            const clickedButton = document.getElementById(`timetable-btn-${index}`);
+            const targetTimetableId = clickedButton.dataset.timetableId;
+            const targetClassId = clickedButton.dataset.classId;
+
             const isVisible = iframeContainer.classList.contains('visible');
-            const isAlreadyActive = btnEl.classList.contains('active');
+            const isCurrentlyActive = clickedButton.classList.contains('active');
 
-            // Clear any pending transition timeouts to prevent weird states if clicked rapidly
-            if (timetableTransitionTimeout) {
-                clearTimeout(timetableTransitionTimeout);
-                timetableTransitionTimeout = null;
-            }
+            const allTimetableBtns = document.querySelectorAll('.timetable-btn');
 
-            // Function to reset all buttons to their default state visually
-            const resetButtonsUI = () => {
-                document.querySelectorAll('.timetable-toggle-btn').forEach(b => {
-                    b.classList.remove('active');
-                    if (b.dataset.originalText) {
-                        b.innerHTML = `<i class="fas fa-calendar-alt"></i> ${b.dataset.originalText}`;
-                    }
-                });
-            };
+            if (isCurrentlyActive) {
+                // --- HIDING THE CURRENTLY OPEN TIMETABLE ---
+                iframeContainer.classList.remove('visible');
+                clickedButton.innerHTML = `<i class="fa-solid fa-calendar-week"></i> ${btnName}`;
+                clickedButton.classList.remove('active');
 
-            // Function to handle opening a specific timetable
-            const openTimetable = () => {
-                // Store original text if not already stored
-                if (!btnEl.dataset.originalText) {
-                    btnEl.dataset.originalText = defaultName;
-                }
-
-                // Set the specific IDs for this timetable
-                const timetableIdInput = document.getElementById('timetable-id-input');
-                const classSelectInput = document.getElementById('class-select');
-                if (timetableIdInput) timetableIdInput.value = tId || '';
-                if (classSelectInput) classSelectInput.value = cId || '';
-
-                resetButtonsUI();
-
-                // Set this button to active
-                btnEl.innerHTML = `<i class="fa fa-eye-slash"></i> ${defaultName}`;
-                btnEl.classList.add('active');
-
-                // Show the container
-                iframeContainer.classList.remove('is-loaded'); // Reset loaded state to show spinner
-                timetableContainer.style.display = ''; // Make parent element visible
-
-                // Attach onload BEFORE submitting
-                iframe.onload = () => {
-                    iframeContainer.classList.add('is-loaded'); // Hide spinner, fade in iframe
-                };
-
-                document.getElementById('timetable-form').submit();
-
-                // A tiny delay allows the 'display' change to render before we start the animation
                 setTimeout(() => {
-                    iframeContainer.classList.add('visible');
-                }, 10);
-            };
-
-            if (isAlreadyActive && isVisible) {
-                // --- HIDING (Closing current active) ---
-                iframeContainer.classList.remove('visible'); // Start closing animation
-                resetButtonsUI();
-
-                // Hide the parent container AFTER the animation is complete
-                timetableTransitionTimeout = setTimeout(() => {
                     timetableContainer.style.display = 'none';
-                    iframe.src = 'about:blank'; // Clear iframe when hidden to ensure fresh load next time
-                    iframeContainer.classList.remove('is-loaded');
-                    timetableTransitionTimeout = null;
                 }, 700); // This must match your CSS transition duration
-
-            } else if (isVisible && !isAlreadyActive) {
-                // --- SWITCHING (Closing current active, then opening new) ---
-                iframeContainer.classList.remove('visible'); // Start closing animation 
-                resetButtonsUI();
-
-                // Wait for the closing animation, then open the new one
-                timetableTransitionTimeout = setTimeout(() => {
-                    openTimetable();
-                    timetableTransitionTimeout = null;
-                }, 700);
             } else {
-                // --- SHOWING (From completely hidden state) ---
-                openTimetable();
+                // --- SHOWING OR SWITCHING ---
+                allTimetableBtns.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.innerHTML = `<i class="fa-solid fa-calendar-week"></i> ${btn.dataset.btnName || 'Timetable'}`;
+                });
+
+                document.getElementById('timetable-id-input').value = targetTimetableId || '';
+                document.getElementById('class-select').value = targetClassId || '';
+
+                if (isVisible) {
+                    // Switch to a new timetable while one is already open
+                    iframeContainer.classList.remove('visible');
+                    iframeContainer.classList.remove('is-loaded');
+                    clickedButton.innerHTML = `<i class="fa-solid fa-calendar-xmark"></i> ${btnName}`;
+                    clickedButton.classList.add('active');
+
+                    setTimeout(() => {
+                        iframe.onload = () => {
+                            iframeContainer.classList.add('is-loaded');
+                            iframeContainer.classList.add('visible');
+                        };
+                        document.getElementById('timetable-form').submit();
+                    }, 500);
+                } else {
+                    // Open from hidden state
+                    iframeContainer.classList.remove('is-loaded');
+                    timetableContainer.style.display = '';
+
+                    iframe.onload = () => {
+                        iframeContainer.classList.add('is-loaded');
+                    };
+                    document.getElementById('timetable-form').submit();
+
+                    setTimeout(() => {
+                        iframeContainer.classList.add('visible');
+                    }, 10);
+
+                    clickedButton.innerHTML = `<i class="fa-solid fa-calendar-xmark"></i> ${btnName}`;
+                    clickedButton.classList.add('active');
+                }
             }
         }
 
@@ -4078,7 +4766,9 @@
 
                     // The new GAS script structure returns { sheets: [ { properties: { title: "Name" } } ] }
                     if (data.sheets && data.sheets.length > 0) {
-                        availableCourses = data.sheets.map(sheet => sheet.properties.title);
+                        availableCourses = data.sheets
+                            .filter(sheet => !sheet.properties.title.startsWith('.'))
+                            .map(sheet => sheet.properties.title);
                         await populateCourseButtons();
 
                         // Fallback logic for Hash Navigation
@@ -4117,7 +4807,7 @@
             }
         }
 
-        const BRAIN_URL = 'https://script.google.com/macros/s/AKfycbyHeZIDKuLV2cuPG7pGDCjaNtGLkv0FWE4ioGXAoS6XpdnadOHZEmsQDOI-GbOVbRX5dw/exec';
+        const BRAIN_URL = 'https://script.google.com/macros/s/AKfycbyI4FXMWejHB7r-bPsPxSbwedwMlpx8thc3ElryH8x1NvHGKpbcro4rEhK4X8RVbLhgyQ/exec';
 
         async function fetchPublicSheetData(sheetName, range) {
             try {
@@ -4168,7 +4858,10 @@
             try {
                 let response = await gapi.client.sheets.spreadsheets.get({ spreadsheetId: COURSE_MATERIALS_SPREADSHEET_ID });
                 const sheets = response.result.sheets || [];
-                availableCourses = sheets.map(sheet => sheet.properties.title);
+                // ONLY expose sheets that do NOT start with a dot (hide .Subscribers)
+                availableCourses = sheets
+                    .filter(sheet => !sheet.properties.title.startsWith('.'))
+                    .map(sheet => sheet.properties.title);
                 await populateCourseButtons();
                 return availableCourses;
             } catch (error) {
@@ -4190,45 +4883,45 @@
             // Shared helper to create a single course button
             const createCourseButton = (sheetName, label) => {
                 const button = document.createElement('div');
-                button.className = 'course-button' + (currentCourse === sheetName ? ' active' : '');
-                button.innerHTML = `<i class="fas fa-th-list"></i>&nbsp; ${formatCourseCode(label)}`;
+                button.setAttribute('class', 'course-button' + (currentCourse === sheetName ? ' active' : ''));
+                button.innerHTML = `<i class="fa-solid fa-th-list"></i>&nbsp; ${formatCourseCode(label)}`;
                 button.dataset.sheet = sheetName;
                 button.onclick = () => selectCourse(sheetName);
                 return button;
             };
 
-            /*       const createArchiveButton = () => {
-                       const button = document.createElement('div');
-                       // Use the standard course-button classes but add an extra style target if needed
-                       button.className = 'course-button archive-course-btn';
-       
-                       // Style the button identically to courses so it lives right next to them
-                       if (isArchiveMode) {
-                           button.innerHTML = `<i class="fa-solid fa-arrow-left"></i><span class="desktop-only">&nbsp; Back</span>`;
-                           button.title = 'Back to Active Courses';
-                       } else {
-                           button.innerHTML = `<i class="fa-solid fa-box-archive"></i><span class="desktop-only">&nbsp; Archives</span>`;
-                           button.title = 'View Past Courses';
-                       }
-       
-                       button.onclick = handleArchiveToggle;
-       
-                       // Optional: apply a slight ghost appearance so it doesn't shout as loudly as your main courses
-                       if (!isArchiveMode) {
-                           button.style.backgroundColor = 'transparent';
-                           button.style.border = '1px solid #e0e0e0';
-                           button.style.color = '#757575';
-                           button.style.boxShadow = 'none';
-                       } else {
-                           // For the back button, keep standard styling to clearly show it's clickable
-                           button.style.backgroundColor = 'transparent';
-                           button.style.border = '1px solid var(--primary-color)';
-                           button.style.color = 'var(--primary-color)';
-                           button.style.boxShadow = 'none';
-                       }
-       
-                       return button;
-                   }; */
+            const createArchiveButton = () => {
+                const button = document.createElement('div');
+                // Use the standard course-button classes but add an extra style target if needed
+                button.setAttribute('class', 'course-button archive-course-btn');
+
+                // Style the button identically to courses so it lives right next to them
+                if (isArchiveMode) {
+                    button.innerHTML = `<i class="fa-solid fa-arrow-left"></i><span class="desktop-only">&nbsp; Back</span>`;
+                    button.title = 'Back to Active Courses';
+                } else {
+                    button.innerHTML = `<i class="fa-solid fa-box-archive"></i><span class="desktop-only">&nbsp; Archives</span>`;
+                    button.title = 'View Past Courses';
+                }
+
+                button.onclick = handleArchiveToggle;
+
+                // Optional: apply a slight ghost appearance so it doesn't shout as loudly as your main courses
+                if (!isArchiveMode) {
+                    button.style.backgroundColor = 'transparent';
+                    button.style.border = '1px solid #e0e0e0';
+                    button.style.color = '#757575';
+                    button.style.boxShadow = 'none';
+                } else {
+                    // For the back button, keep standard styling to clearly show it's clickable
+                    button.style.backgroundColor = 'transparent';
+                    button.style.border = '1px solid var(--primary-color)';
+                    button.style.color = 'var(--primary-color)';
+                    button.style.boxShadow = 'none';
+                }
+
+                return button;
+            };
 
             const updateFaderForButtons = () => {
                 const tabsWrapper = container.querySelector('.course-tabs-wrapper');
@@ -4236,14 +4929,14 @@
             };
 
             const renderButtons = (useCourseMap) => {
-                /*    const archiveBtn = createArchiveButton(); */
+                const archiveBtn = null; // createArchiveButton();
 
 
 
                 // An inner wrapper keeps the course tabs isolated geographically from the Back button
                 // so that when rows wrap, they stay aligned to their own left edge.
                 const tabsWrapper = document.createElement('div');
-                tabsWrapper.className = 'course-tabs-wrapper';
+                tabsWrapper.setAttribute('class', 'course-tabs-wrapper');
                 tabsWrapper.addEventListener('scroll', () => updateScrollFaders(tabsWrapper), { passive: true });
 
                 availableCourses.forEach((sheetName, index) => {
@@ -4260,12 +4953,12 @@
                     tabsWrapper.appendChild(btn);
                 });
 
-                /* if (archiveBtn) archiveBtn.style.marginLeft = '2px'; */
+                if (archiveBtn) archiveBtn.style.marginLeft = '2px';
 
                 // Clear the container before re-adding everything
                 container.innerHTML = '';
                 container.appendChild(tabsWrapper);
-                /* if (archiveBtn) container.appendChild(archiveBtn); */
+                if (archiveBtn) container.appendChild(archiveBtn);
 
                 updateFaderForButtons();
 
@@ -4465,8 +5158,8 @@
                 if (visibleModules === 0 && !noResultsEl) {
                     noResultsEl = document.createElement('div');
                     noResultsEl.id = 'no-search-results';
-                    noResultsEl.className = 'empty-content';
-                    noResultsEl.innerHTML = '<i class="fas fa-search"></i><br>No modules match your search.';
+                    noResultsEl.setAttribute('class', 'empty-content');
+                    noResultsEl.innerHTML = '<i class="fa-solid fa-search"></i><br>No modules match your search.';
                     document.getElementById('course-content').appendChild(noResultsEl);
                 } else if (visibleModules > 0 && noResultsEl) {
                     noResultsEl.remove();
@@ -4498,11 +5191,16 @@
             fetchCourseData(sheetName).then(data => {
                 if (data) {
                     Object.assign(courseData, data);
-                    document.title = data.metadata.code ? `${formatCourseCode(data.metadata.code)} ${data.metadata.title || 'Course'}` : 'Course Materials';
+                    window.currentCourseData = data; // Expose globally for dismissal re-renders
+
+                    let titleBase = data.metadata.code ? `${formatCourseCode(data.metadata.code)} ${data.metadata.title || 'Course'}` : 'Course Materials';
+                    let announcementCount = 0;
+                    document.title = titleBase;
 
                     updateCourseMetadata(data.metadata);
                     populateActionButtons(data.actionButtons, data.metadata);
                     applyColorTheme(data.metadata); // Sets the new colours
+                    renderAnnouncements(data.announcements);
                     setupSortAndRender(); // Renders the content into the hidden main-container
 
                     // Immediately show the layout as soon as it's processed
@@ -4511,8 +5209,14 @@
                     document.body.classList.remove('is-switching');
 
                     setTimeout(() => {
+                        const cat = document.getElementById('cat-companion');
+                        if (cat) cat.classList.add('visible');
+
                         const fab = document.getElementById('mobile-fab');
                         if (fab && !fab.classList.contains('nav-hidden')) fab.classList.add('fab-visible');
+
+                        // Emit event so the notification bell checks subscription status immediately
+                        window.dispatchEvent(new Event('courseChanged'));
 
                     }, 250); // Muted delay to just wait for JS to finish its single-thread work
 
@@ -4565,11 +5269,11 @@
             };
 
             const updateButtonState = (order) => {
-                const iconClass = order === 'asc' ? 'fas fa-sort-amount-up' : 'fas fa-sort-amount-down';
-                const wrap = sortButton.querySelector('.sort-icon-wrap');
-                if (wrap) {
-                    // Replace innerHTML so FontAwesome processes the fresh <i>
-                    wrap.innerHTML = `<i class="${iconClass}"></i>`;
+                const oldIcon = sortButton.querySelector('i, svg');
+                if (oldIcon) {
+                    const i = document.createElement('i');
+                    i.className = order === 'asc' ? 'fa-solid fa-sort-amount-up' : 'fa-solid fa-sort-amount-down';
+                    oldIcon.replaceWith(i);
                 }
                 sortButton.title = order === 'asc' ? 'Sort Descending' : 'Sort Ascending';
                 sortButton.dataset.order = order;
@@ -4652,9 +5356,15 @@
                     const newJSON = JSON.stringify(freshData);
                     if (oldJSON !== newJSON) {
                         Object.assign(courseData, freshData);
+                        window.currentCourseData = freshData; // Expose globally
+
+                        let titleBase = freshData.metadata.code ? `${formatCourseCode(freshData.metadata.code)} ${freshData.metadata.title || 'Course'}` : 'Course Materials';
+                        document.title = titleBase;
+
                         updateCourseMetadata(freshData.metadata);
                         populateActionButtons(freshData.actionButtons, freshData.metadata);
                         applyColorTheme(freshData.metadata, true);
+                        renderAnnouncements(freshData.announcements);
                         setupSortAndRender();
                     }
                 }
@@ -4662,7 +5372,7 @@
         }
 
         function processCourseData(rows) {
-            const data = { metadata: {}, modules: [], actionButtons: [] };
+            const data = { metadata: {}, modules: [], actionButtons: [], announcements: [] };
             let currentModule = null;
 
             const getMaterialObject = (r) => ({
@@ -4676,8 +5386,8 @@
                 const colFValue = String(row[5] || '').toLowerCase().trim();
                 if (!colFValue) return null; // Skip if column F is empty
                 const defaults = type === 'project'
-                    ? { icon: 'fas fa-flask', title: 'Untitled Project' }
-                    : { icon: 'fas fa-folder', title: 'Untitled Module' };
+                    ? { icon: 'fa-solid fa-flask', title: 'Untitled Project' }
+                    : { icon: 'fa-solid fa-folder', title: 'Untitled Module' };
                 return {
                     type: type === 'project' ? 'project' : 'standard',
                     id: row[1] || Date.now().toString(),
@@ -4703,7 +5413,7 @@
                 } else if (type === 'button') {
                     data.actionButtons.push({
                         name: row[1] || 'Button',
-                        icon: row[2] || 'fas fa-external-link-alt',
+                        icon: row[2] || 'fa-solid fa-external-link-alt',
                         link: row[3] || '#',
                         colorClass: row[4] || 'btn-primary'
                     });
@@ -4715,6 +5425,31 @@
                     } else {
                         currentModule = null; // Reset so materials don't attach to previous module
                     }
+                } else if (type === 'announcement') {
+                    // Expect format: type, icon, color, time, title, text, actionLink, actionIcons, visibility
+                    const iconStr = row[1] || 'fa-solid fa-bullhorn';
+                    const colorStr = row[2] || 'var(--warning-color)';
+                    const timeStr = row[3] || '';
+                    const titleStr = row[4] || '';
+                    const textStr = row[5] || '';
+                    const actionLinkStr = row[6] || '';
+                    const actionIconsStr = row[7] || '';
+                    const visibilityStr = String(row[8] || 'HIDE').toUpperCase().trim();
+
+                    if (timeStr || titleStr || textStr) {
+                        data.announcements.push({
+                            icon: iconStr,
+                            color: colorStr,
+                            time: timeStr,
+                            title: titleStr,
+                            text: textStr,
+                            actionLink: actionLinkStr,
+                            actionIcons: actionIconsStr,
+                            visibility: visibilityStr
+                        });
+                    }
+                } else if (type === 'project_description' && currentModule) {
+                    currentModule.materials.push({ isDescription: true, text: row[1] || row[2] || '' });
                 } else if (type === 'material' && currentModule && currentModule.type === 'standard') {
                     currentModule.materials.push(getMaterialObject(row));
                 } else if (type === 'project_file' && currentModule && currentModule.type === 'project') {
@@ -4729,6 +5464,8 @@
                     currentModule.funFacts.push({ text: row[1] || '' });
                 }
             });
+
+            data.announcements.reverse(); // Show newest announcements first (opposite of backend)
             return data;
         }
 
@@ -4738,46 +5475,280 @@
             if (!container) return;
             container.innerHTML = '';
 
+            // Add Notifications button if not subscribed
+            let rawCourse = currentCourse || window.location.hash.substring(1) || new URLSearchParams(window.location.search).get('course') || 'General';
+            let activeCourse = String(rawCourse).trim().replace(/%20| /g, "_");
+            if (window.isArchiveMode) {
+                activeCourse = "archive_" + activeCourse;
+            }
+            const subs = JSON.parse(localStorage.getItem('push_subscriptions') || '{}');
+            const isInitiallySubbed = !!subs[activeCourse];
+
+            const subBtn = document.createElement('button');
+            if (isInitiallySubbed) {
+                subBtn.setAttribute('class', 'btn-green icon-only-btn');
+                subBtn.title = "Notifications: On";
+                subBtn.innerHTML = `<i class="fa-solid fa-bell"></i>`;
+            } else {
+                subBtn.setAttribute('class', 'btn-orange');
+                subBtn.innerHTML = `<i class="fa-solid fa-bell-slash"></i> Notifications <strong>Off</strong>`;
+            }
+
+            subBtn.onclick = async () => {
+                // Lock the width to prevent the flexbox from glitching siblings
+                // Math.ceil prevents fractional pixel roundings from causing 1px jumps on mobile OS
+                const currentWidth = Math.ceil(subBtn.getBoundingClientRect().width);
+                subBtn.style.width = currentWidth + 'px';
+                subBtn.style.minWidth = currentWidth + 'px';
+
+                const originalHTML = subBtn.innerHTML;
+                subBtn.innerHTML = isInitiallySubbed ? '<i class="fa-solid fa-spinner fa-spin"></i>' : '<i class="fa-solid fa-spinner fa-spin"></i> Checking...';
+                subBtn.style.opacity = '0.7';
+                subBtn.style.pointerEvents = 'none';
+
+                let isSubscribed = isInitiallySubbed;
+                let currentToken = null;
+                let swReg = null;
+
+                try {
+                    // Check true registration status
+                    swReg = await navigator.serviceWorker.getRegistration('/firebase-messaging-sw.js');
+                    if (swReg) {
+                        const subscription = await swReg.pushManager.getSubscription();
+                        if (subscription) {
+                            let currentSubs = JSON.parse(localStorage.getItem('push_subscriptions') || '{}');
+                            isSubscribed = !!currentSubs[activeCourse];
+                            if (isSubscribed !== isInitiallySubbed) {
+                                // Sync button if they changed state in another tab
+                                if (isSubscribed) {
+                                    subBtn.setAttribute('class', 'btn-green icon-only-btn');
+                                    subBtn.title = "Notifications: On";
+                                    subBtn.innerHTML = `<i class="fa-solid fa-bell"></i>`;
+                                } else {
+                                    subBtn.setAttribute('class', 'btn-red');
+                                    subBtn.innerHTML = `<i class="fa-solid fa-bell-slash"></i> Notifications <strong>Off</strong>`;
+                                }
+                            }
+                            // Optionally grab the token if we need to unsubscribe
+                            try {
+                                currentToken = await window.getToken(window.messaging, {
+                                    vapidKey: "BHi3bON6AbdJwp4xFEdexlLWmEJlhN8_3MeHahg2C-7xoitZm07PkOgfpmrCx0N3tnZHwQXlixvX25EL4Ec4RCM",
+                                    serviceWorkerRegistration: swReg
+                                });
+                            } catch (e) {
+                                // Token might be invalidated, treat as needs repair/resubscribe
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error checking subscription status:", e);
+                }
+
+                subBtn.innerHTML = originalHTML;
+                subBtn.style.opacity = '1';
+                subBtn.style.pointerEvents = 'auto';
+                subBtn.style.width = ''; // Restore flexible width
+                subBtn.style.minWidth = '';
+
+                const existingModal = document.getElementById('notif-confirm-modal');
+                if (existingModal) existingModal.remove();
+
+                const friendlyCourse = formatCourseCode(activeCourse.replace(/^archive_/, ''));
+                const modal = document.createElement('div');
+                modal.id = 'notif-confirm-modal';
+
+                if (isSubscribed) {
+                    // UNSUBSCRIBE VIEW
+                    modal.innerHTML = `
+                        <div class="notif-modal-card">
+                            <h3><i class="fa-solid fa-bell"></i> Notifications</h3>
+                            <p>You are currently receiving push notifications for <strong>${friendlyCourse}</strong>.</p>
+                            <div class="notif-modal-btns">
+                                <button id="notif-cancel-btn"><i class="fa-solid fa-xmark"></i> Close</button>
+                                <button id="notif-unsubscribe-btn" class="btn-orange"><i class="fa-solid fa-bell-slash"></i> Unsubscribe</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // SUBSCRIBE VIEW
+                    modal.innerHTML = `
+                        <div class="notif-modal-card">
+                            <h3><i class="fa-solid fa-bell-slash"></i> Notifications</h3>
+                            <p>Receive push notifications for <strong>${friendlyCourse}</strong> when new materials, schedule changes or important updates are posted?</p>
+                            <div class="notif-modal-btns">
+                                <button id="notif-cancel-btn"><i class="fa-solid fa-xmark"></i> Cancel</button>
+                                <button id="notif-enable-btn" class="btn-green"><i class="fa-solid fa-bell"></i> Subscribe</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                document.body.appendChild(modal);
+
+                // Trigger CSS Animation
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        modal.classList.add('show');
+                    });
+                });
+
+                const closeModal = () => {
+                    modal.classList.remove('show');
+                    setTimeout(() => modal.remove(), 400); // Wait for transition
+                };
+
+                modal.querySelector('#notif-cancel-btn').onclick = closeModal;
+                modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+
+                if (isSubscribed) {
+                    const unsubBtn = modal.querySelector('#notif-unsubscribe-btn');
+                    unsubBtn.onclick = async () => {
+                        unsubBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Removing...';
+                        unsubBtn.style.pointerEvents = 'none';
+
+                        try {
+                            // Tell the Google Sheet backend to remove it
+                            if (BRAIN_URL && currentToken) {
+                                await fetch(BRAIN_URL, {
+                                    method: 'POST',
+                                    body: new URLSearchParams({ 'action': 'unsubscribe', 'token': currentToken, 'course': activeCourse })
+                                }).catch(e => console.error("Error unsubscribing backend:", e));
+                            }
+
+                            // 3. Clear local cache
+                            let currentSubs = JSON.parse(localStorage.getItem('push_subscriptions') || '{}');
+                            delete currentSubs[activeCourse];
+                            localStorage.setItem('push_subscriptions', JSON.stringify(currentSubs));
+
+                            // Show success inside the modal itself
+                            const modalBtns = modal.querySelector('.notif-modal-btns');
+                            if (modalBtns) modalBtns.style.display = 'none';
+                            modal.querySelector('h3').innerHTML = '<i class="fa-solid fa-check-circle" style="color:var(--success-color, #4CAF50)"></i> Success';
+                            modal.querySelector('p').innerHTML = `You have been <strong>unsubscribed</strong> from ${friendlyCourse}.`;
+
+                            // Update button dynamically
+                            subBtn.setAttribute('class', 'btn-red');
+                            subBtn.innerHTML = `<i class="fa-solid fa-bell-slash"></i> Notifications <strong>Off</strong>`;
+                            subBtn.removeAttribute('title');
+
+                            // Close gently after a delay
+                            setTimeout(() => {
+                                closeModal();
+                            }, 1500);
+
+                        } catch (e) {
+                            console.error("Error unsubscribing:", e);
+                            unsubBtn.innerHTML = '<i class="fa-solid fa-bell-slash"></i> Unsubscribe';
+                            unsubBtn.style.pointerEvents = 'auto';
+                            alert('Unsubscribe Failed: There was an error. Please try again.');
+                        }
+                    };
+                } else {
+                    const enableBtn = modal.querySelector('#notif-enable-btn');
+                    enableBtn.onclick = async () => {
+                        enableBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subscribing...';
+                        enableBtn.style.pointerEvents = 'none';
+                        try {
+                            const permission = await Notification.requestPermission();
+                            if (permission === 'granted') {
+                                if (!swReg) {
+                                    swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                                    await navigator.serviceWorker.ready;
+                                }
+                                const token = await window.getToken(window.messaging, {
+                                    vapidKey: "BHi3bON6AbdJwp4xFEdexlLWmEJlhN8_3MeHahg2C-7xoitZm07PkOgfpmrCx0N3tnZHwQXlixvX25EL4Ec4RCM",
+                                    serviceWorkerRegistration: swReg
+                                });
+                                if (token) {
+                                    if (BRAIN_URL) {
+                                        // Await the fetch so the UI reflects the actual network time
+                                        await fetch(BRAIN_URL, {
+                                            method: 'POST',
+                                            body: new URLSearchParams({ 'action': 'subscribe', 'token': token, 'course': activeCourse })
+                                        });
+                                    }
+                                    let currentSubs = JSON.parse(localStorage.getItem('push_subscriptions') || '{}');
+                                    currentSubs[activeCourse] = true;
+                                    localStorage.setItem('push_subscriptions', JSON.stringify(currentSubs));
+
+                                    // Show success inside the modal itself
+                                    const modalBtns = modal.querySelector('.notif-modal-btns');
+                                    if (modalBtns) modalBtns.style.display = 'none';
+                                    modal.querySelector('h3').innerHTML = '<i class="fa-solid fa-check-circle" style="color:var(--success-color, #4CAF50)"></i> Success';
+                                    modal.querySelector('p').innerHTML = `You are now <strong>subscribed</strong> to ${friendlyCourse}.`;
+
+                                    // Update button dynamically
+                                    subBtn.setAttribute('class', 'btn-green icon-only-btn');
+                                    subBtn.title = "Notifications: On";
+                                    subBtn.innerHTML = `<i class="fa-solid fa-bell"></i>`;
+
+                                    // Close gently after a delay
+                                    setTimeout(() => {
+                                        closeModal();
+                                    }, 1500);
+                                }
+                            } else {
+                                // Notification permission denied
+                                const modalBtns = modal.querySelector('.notif-modal-btns');
+                                if (modalBtns) modalBtns.style.display = 'none';
+                                modal.querySelector('h3').innerHTML = '<i class="fa-solid fa-circle-xmark" style="color:var(--error-color, #f44336)"></i> Permission Denied';
+                                modal.querySelector('p').innerHTML = `You must allow notifications in your browser settings (the lock icon in your address bar) to receive alerts.`;
+
+                                setTimeout(() => {
+                                    modal.style.opacity = '0';
+                                    modal.style.transition = 'opacity 0.3s ease';
+                                    setTimeout(() => modal.remove(), 300);
+                                }, 3000); // Wait longer so they can read the instructions
+                            }
+                        } catch (e) {
+                            console.error("Error subscribing:", e);
+                            const modalBtns = modal.querySelector('.notif-modal-btns');
+                            if (modalBtns) modalBtns.style.display = 'none';
+                            modal.querySelector('h3').innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:var(--error-color, #f44336)"></i> Failed';
+                            modal.querySelector('p').innerHTML = `There was an error connecting to the notification server. Please try again later.`;
+
+                            setTimeout(() => {
+                                modal.style.opacity = '0';
+                                modal.style.transition = 'opacity 0.3s ease';
+                                setTimeout(() => modal.remove(), 300);
+                            }, 2500);
+                        }
+                    };
+                }
+            };
+            container.appendChild(subBtn);
+
+            const timetableContainer = document.getElementById('timetable-container');
+
+            let addedAny = false;
+            for (let i = 1; i <= 10; i++) {
+                const tId = metadata[`timetable${i}_id`] !== undefined ? metadata[`timetable${i}_id`] : (i === 1 ? metadata['timetable_id'] : undefined);
+                const cId = metadata[`class${i}_id`] !== undefined ? metadata[`class${i}_id`] : (i === 1 ? metadata['class_id'] : undefined);
+
+                if (tId !== undefined && tId !== '') {
+                    const btnName = metadata[`timetable${i}_name`] || 'Timetable';
+                    const btnColor = metadata[`timetable${i}_colour`] || 'btn-primary';
+
+                    const timetableBtn = document.createElement('button');
+                    timetableBtn.id = `timetable-btn-${i}`;
+                    timetableBtn.setAttribute('class', `timetable-btn ${btnColor}`);
+                    timetableBtn.innerHTML = `<i class="fa-solid fa-calendar-week"></i> ${btnName}`;
+                    timetableBtn.dataset.timetableId = tId;
+                    timetableBtn.dataset.classId = cId !== undefined ? cId : '';
+                    timetableBtn.dataset.btnName = btnName;
+                    timetableBtn.onclick = () => toggleTimetable(i, btnName);
+                    container.appendChild(timetableBtn);
+                    addedAny = true;
+                }
+            }
+
             buttons.forEach(buttonData => {
                 const button = document.createElement('button');
-                button.className = buttonData.colorClass;
+                button.setAttribute('class', buttonData.colorClass);
                 button.innerHTML = `<i class="${buttonData.icon}"></i> ${buttonData.name}`;
                 button.onclick = () => handleActionClick(button, buttonData.link);
                 container.appendChild(button);
             });
-
-            // Handle multiple timetables (up to 10)
-            const isTimetableEnabled = String(metadata.timetable_enabled || '').toLowerCase() === 'true' || String(metadata.timetable_enabled || '') === '1';
-
-            if (isTimetableEnabled) {
-                // If the old timetable_id flag exists, treat it as timetable1 for backwards compatibility if timetable1_id isn't explicitly set
-                const legacyId = metadata.timetable_id;
-                const legacyClassId = metadata.class_id;
-
-                for (let i = 1; i <= 10; i++) {
-                    let tId = metadata[`timetable${i}_id`];
-                    let cId = metadata[`class${i}_id`];
-                    let tName = metadata[`timetable${i}_name`] || (i === 1 ? 'Timetable' : `Timetable ${i}`);
-                    let tColor = metadata[`timetable${i}_colour`] || '';
-                    let hasTimetable = !!tId;
-
-                    if (i === 1 && !hasTimetable && legacyId) {
-                        tId = legacyId;
-                        cId = legacyClassId;
-                        hasTimetable = true;
-                    }
-
-                    if (hasTimetable) {
-                        const timetableBtn = document.createElement('button');
-                        timetableBtn.id = `timetable-btn-${i}`;
-                        timetableBtn.className = `timetable-toggle-btn ${tColor}`;
-                        timetableBtn.innerHTML = `<i class="fas fa-calendar-alt"></i> ${tName}`;
-                        timetableBtn.dataset.originalText = tName;
-                        timetableBtn.onclick = () => toggleTimetable(timetableBtn, tId, cId, tName);
-                        container.appendChild(timetableBtn);
-                    }
-                }
-            }
 
             // Track wrapped rows for proper CSS edge rounding
             if (!container._resizeObserver) {
@@ -4793,40 +5764,58 @@
             let filesHtml = '';
 
             if (module.materials.length > 0) {
-                const materialCount = module.materials.length;
+                const materialCount = module.materials.filter(m => !m.isDescription).length;
                 let gridClass = 'materials-grid';
                 if (materialCount === 1) gridClass += ' materials-1';
                 else if (materialCount === 2) gridClass += ' materials-2';
 
-                filesHtml += `<div class="${gridClass}">`;
+                let inGrid = false;
                 module.materials.forEach(material => {
-                    filesHtml += `
+                    if (material.isDescription) {
+                        if (inGrid) { filesHtml += `</div>`; inGrid = false; }
+                        filesHtml += `<div class="project-module-description">${material.text}</div>`;
+                    } else {
+                        if (!inGrid) { filesHtml += `<div class="${gridClass}">`; inGrid = true; }
+                        filesHtml += `
             <div class="material-card ${material.fileTypeClass || ''}">
                 <div class="material-card-header">
-                    <i class="${material.icon || 'far fa-file-alt'} material-icon"></i>
+                    <i class="${material.icon || 'fa-regular fa-file-alt'} material-icon"></i>
                     <div class="material-info">
                         <div class="material-title">${material.title}</div>
                         <div class="material-description">${material.description}</div>
                     </div>
                 </div>
 <div class="material-card-actions">
-    ${material.viewLink ? `<button onclick="handleActionClick(this, '${material.viewLink}')" class="btn-blue"><span><i class="far fa-eye"></i> View</span></button>` : ''}
-    ${material.downloadLink ? `<button onclick="handleActionClick(this, '${material.downloadLink}')" class="btn-green"><span><i class="far fa-save"></i> Download</span></button>` : ''}
-    ${material.openLink ? `<button onclick="handleActionClick(this, '${material.openLink}')" class="btn-orange"><span><i class="fas fa-external-link-alt"></i> Open</span></button>` : ''}
+    ${material.viewLink ? `<button onclick="handleActionClick(this, '${material.viewLink}')" class="btn-blue"><span><i class="fa-regular fa-eye"></i> View</span></button>` : ''}
+    ${material.downloadLink ? `<button onclick="handleActionClick(this, '${material.downloadLink}')" class="btn-green"><span><i class="fa-regular fa-save"></i> Download</span></button>` : ''}
+    ${material.openLink ? `<button onclick="handleActionClick(this, '${material.openLink}')" class="btn-orange"><span><i class="fa-solid fa-external-link-alt"></i> Open</span></button>` : ''}
 </div>
             </div>`;
+                    }
                 });
-                filesHtml += `</div>`;
+                if (inGrid) filesHtml += `</div>`;
             }
 
             let groupsHtml = '';
             if (module.groups.length > 0) {
-                groupsHtml += `<div class="project-groups-grid">`;
+                const scrollClass = module.groups.length > 6 ? ' desktop-scrollable is-scrollable' : '';
+                groupsHtml += `<div class="project-groups-grid${scrollClass}">`;
                 module.groups.forEach(group => {
                     let studentsList = '<ul class="student-list">';
                     group.students.forEach((student, index) => {
+                        // If the name is N/A, we skip this entry.
+                        // If it's the first entry (index 0), then no one gets the 'leader' underline.
+                        if (student.trim().toUpperCase() === 'N/A') return;
+
                         const className = index === 0 ? 'class="leader"' : '';
-                        studentsList += `<li ${className}>${student}</li>`;
+
+                        let displayName = student;
+                        const match = student.match(/^(.*?)\s+(R|R\s+EX)$/i);
+                        if (match) {
+                            displayName = `${match[1]} <span class="student-status-warning">${match[2].toUpperCase()}</span>`;
+                        }
+
+                        studentsList += `<li ${className}>${displayName}</li>`;
                     });
                     studentsList += '</ul>';
 
@@ -4836,14 +5825,14 @@
                         group.files.forEach(file => {
                             groupFilesHtml += `
                     <div class="group-material-card ${file.fileTypeClass || ''}">
-                        <i class="${file.icon || 'far fa-file-alt'} material-icon"></i>
+                        <i class="${file.icon || 'fa-regular fa-file-alt'} material-icon"></i>
                         <div class="material-info">
                             <div class="material-title">${file.title}</div>
                             <div class="material-description">${file.description}</div>
                         </div>
                         <div class="material-card-actions">
-                             ${file.viewLink ? `<button onclick="handleActionClick(this, '${file.viewLink}')" class="btn-blue"><span><i class="far fa-eye"></i></span></button>` : ''}
- ${file.downloadLink ? `<button onclick="handleActionClick(this, '${file.downloadLink}')" class="btn-green"><span><i class="far fa-save"></i></span></button>` : ''}
+                             ${file.viewLink ? `<button onclick="handleActionClick(this, '${file.viewLink}')" class="btn-blue"><span><i class="fa-regular fa-eye"></i></span></button>` : ''}
+ ${file.downloadLink ? `<button onclick="handleActionClick(this, '${file.downloadLink}')" class="btn-green"><span><i class="fa-regular fa-save"></i></span></button>` : ''}
                         </div>
                     </div>`;
                         });
@@ -4881,17 +5870,16 @@
         }
 
         function resetUIElements() {
-            document.querySelectorAll('.timetable-toggle-btn').forEach(btn => {
+            const timetableBtns = document.querySelectorAll('.timetable-btn');
+            timetableBtns.forEach(btn => {
+                const btnName = btn.dataset.btnName || 'Timetable';
+                btn.innerHTML = `<i class="fa-solid fa-calendar-week"></i> ${btnName}`;
                 btn.classList.remove('active');
-                if (btn.dataset.originalText) {
-                    btn.innerHTML = `<i class="fas fa-calendar-alt"></i> ${btn.dataset.originalText}`;
-                }
             });
 
             const iframeContainer = document.getElementById('iframe-container');
             if (iframeContainer) {
                 iframeContainer.classList.remove('visible');
-                iframeContainer.classList.remove('is-loaded');
             }
 
             // Hide the entire timetable section completely
@@ -4900,14 +5888,460 @@
                 timetableContainer.style.display = 'none';
             }
 
-            const iframe = document.getElementById('timetable-iframe');
-            if (iframe) {
-                iframe.src = 'about:blank';
+            const announcementBanner = document.getElementById('announcement-banner');
+            if (announcementBanner) {
+                announcementBanner.style.display = 'none';
+                announcementBanner.innerHTML = '';
             }
         }
 
+        function getDismissedAnnouncements() {
+            try {
+                return JSON.parse(localStorage.getItem('dismissedAnnouncements') || '[]');
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function updateAnnouncementCorners() {
+            document.querySelectorAll('.announcement-row-group').forEach(group => {
+                const rows = Array.from(group.querySelectorAll('.announcement-row:not(.swipe-dismissing)'));
+
+                group.querySelectorAll('.announcement-row').forEach(row => {
+                    row.classList.remove('first-in-col', 'last-in-col', 'middle-in-col', 'only-in-col');
+                });
+
+                if (rows.length === 1) {
+                    rows[0].classList.add('only-in-col');
+                } else if (rows.length > 1) {
+                    rows.forEach((row, index) => {
+                        if (index === 0) row.classList.add('first-in-col');
+                        else if (index === rows.length - 1) row.classList.add('last-in-col');
+                        else row.classList.add('middle-in-col');
+                    });
+                }
+            });
+        }
+
+        function dismissAnnouncement(id, cardElement) {
+            const dismissed = getDismissedAnnouncements();
+            if (!dismissed.includes(id)) {
+                dismissed.push(id);
+                localStorage.setItem('dismissedAnnouncements', JSON.stringify(dismissed));
+            }
+
+            if (cardElement) {
+                // If they passed the inner card instead of the row, find it
+                const targetRow = cardElement.classList.contains('announcement-row') ? cardElement : cardElement.closest('.announcement-row');
+                if (targetRow) targetRow.classList.add('swipe-dismissing');
+                else cardElement.classList.add('swipe-dismissing');
+
+                updateAnnouncementCorners();
+
+                setTimeout(() => {
+                    // Force a re-render of announcements from the cached data source
+                    if (window.currentCourseData && window.currentCourseData.announcements) {
+                        renderAnnouncements(window.currentCourseData.announcements);
+                    }
+                }, 300); // Wait for transition
+            }
+        }
+
+        function clearAllAnnouncements() {
+            if (window.currentCourseData && window.currentCourseData.announcements) {
+                const visibleIds = window.currentCourseData.announcements.map((ann) => btoa(encodeURIComponent(currentCourse + (ann.title || '') + (ann.text || '') + (ann.time || ''))));
+                const dismissed = getDismissedAnnouncements();
+
+                visibleIds.forEach(id => {
+                    if (!dismissed.includes(id)) {
+                        dismissed.push(id);
+                    }
+                });
+
+                localStorage.setItem('dismissedAnnouncements', JSON.stringify(dismissed));
+                renderAnnouncements(window.currentCourseData.announcements);
+            }
+        }
+
+        function toggleAnnouncements() {
+            const collapsedDiv = document.getElementById('announcements-collapsed-view');
+            const toggleBtn = document.getElementById('announcements-toggle-btn');
+
+            if (collapsedDiv && toggleBtn) {
+                if (collapsedDiv.style.maxHeight && collapsedDiv.style.maxHeight !== '0px') {
+                    // Close Action
+                    collapsedDiv.style.maxHeight = '0px';
+                    collapsedDiv.style.opacity = '0';
+                    collapsedDiv.dataset.expanded = 'false';
+                    toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Show older';
+
+                    // Wait for the CSS transition to finish before hiding it structurally
+                    setTimeout(() => {
+                        if (collapsedDiv.style.maxHeight === '0px') {
+                            collapsedDiv.style.display = 'none';
+                        }
+                    }, 300); // 0.3s matches the CSS transition time
+                } else {
+                    // Open Action
+                    collapsedDiv.style.display = 'flex'; // Un-hide structurally first
+
+                    // Force a reflow so the browser registers the flex display before applying height
+                    void collapsedDiv.offsetHeight;
+
+                    collapsedDiv.style.maxHeight = collapsedDiv.scrollHeight + 'px';
+                    collapsedDiv.style.opacity = '1';
+                    collapsedDiv.dataset.expanded = 'true';
+                    toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Hide older';
+                }
+            }
+        }
+
+        function renderAnnouncements(announcements) {
+            const banner = document.getElementById('announcement-banner');
+            if (!banner) return;
+
+            // Generate reproducible IDs and filter out dismissed ones
+            const dismissedIds = getDismissedAnnouncements();
+            const visibleAnnouncements = (announcements || []).map((ann) => {
+                const id = btoa(encodeURIComponent(currentCourse + (ann.title || '') + (ann.text || '') + (ann.time || '')));
+                return { ...ann, id };
+            }).filter(ann => !dismissedIds.includes(ann.id));
+
+            if (visibleAnnouncements.length === 0) {
+                banner.style.display = 'none';
+                banner.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+
+            const renderCardHtml = (ann) => {
+                let rawColor = (ann.color || '').trim();
+                let cssColorVar = 'var(--primary-color)';
+
+                if (rawColor) {
+                    if (['primary', 'secondary', 'tertiary', 'accent', 'success', 'warning', 'info', 'danger'].includes(rawColor)) {
+                        cssColorVar = `var(--${rawColor}-color)`;
+                    } else if (rawColor.startsWith('--')) {
+                        cssColorVar = `var(${rawColor})`;
+                    } else {
+                        cssColorVar = rawColor;
+                    }
+                }
+
+                let infoHtml = '';
+                if (ann.icon) {
+                    const profMatch = ann.icon.match(/^professor(\d+)$/i);
+                    if (profMatch && window.currentCourseData && window.currentCourseData.metadata) {
+                        const profNum = profMatch[1];
+                        const photoUrl = window.currentCourseData.metadata[`professor${profNum}_photo`];
+                        const profName = window.currentCourseData.metadata[`professor${profNum}`];
+                        if (photoUrl) {
+                            infoHtml += `<img src="${photoUrl}" alt="Professor" class="announcement-avatar" style="border-color: ${cssColorVar};">`;
+                        } else {
+                            // Fallback if professor specified but no photo provided
+                            infoHtml += `<i class="fa-solid fa-user-circle announcement-icon" style="color: ${cssColorVar};"></i>`;
+                        }
+                        if (profName) {
+                            // Strip common academic titles and prefixes before grabbing the first name
+                            const titleRegex = /^(?:assoc\.|prof\.|dr\.|mr\.|ms\.|mrs\.|ing\.|eng\.|prof|dr|mr|ms|mrs|ing|eng)\s+/gi;
+                            const cleanName = profName.replace(titleRegex, '').replace(titleRegex, '').trim();
+                            const firstName = cleanName.split(' ')[0];
+                            infoHtml += `<div class="announcement-prof-name" style="color: ${cssColorVar};">${firstName}</div>`;
+                        }
+                    } else {
+                        infoHtml += `<i class="${ann.icon} announcement-icon" style="color: ${cssColorVar};"></i>`;
+                    }
+                }
+
+                let timeHtml = '';
+                if (ann.time) {
+                    timeHtml = `<span class="announcement-date" style="color: ${cssColorVar};">${ann.time}</span>`;
+                }
+
+                let actionHtml = '';
+                if (ann.actionLink) {
+                    const links = ann.actionLink.split(',').map(l => l.trim()).filter(l => l);
+                    const icons = (ann.actionIcons || '').split(',').map(i => i.trim());
+                    if (links.length > 0) {
+                        actionHtml = '<div class="material-card-actions">';
+                        links.forEach((link, i) => {
+                            const btnBgStyle = ann.color ? `background-color: ${cssColorVar}; border-color: rgba(0,0,0,0.15);` : '';
+                            const defaultClass = ann.color ? '' : 'btn-primary';
+
+                            // Explicit classes for future proofing styling fallbacks
+                            let posClass = '';
+                            if (links.length === 1) posClass = 'only-in-row';
+                            else if (i === 0) posClass = 'first-in-row';
+                            else if (i === links.length - 1) posClass = 'last-in-row';
+                            else posClass = 'middle-in-row';
+
+                            const iconClass = icons[i] || 'fa-solid fa-up-right-from-square';
+
+                            actionHtml += `
+                                <button onclick="handleActionClick(this, '${link}')" class="${defaultClass} ${posClass}" style="${btnBgStyle}" title="Open Link">
+                                    <i class="${iconClass}" style="margin-right: 0;"></i>
+                                </button>`;
+                        });
+                        actionHtml += '</div>';
+                    }
+                }
+                return `
+                    <div class="announcement-row" id="ann-row-${ann.id}">
+                        <div class="announcement-card swipeable-announcement" style="--card-accent: ${cssColorVar};">
+                            <div class="announcement-icon-wrapper">
+                                ${infoHtml}
+                            </div>
+                            <div class="announcement-content-wrapper">
+                                <div class="announcement-header-row">
+                                    <div class="announcement-header-info">
+                                        ${ann.title ? `<span class="announcement-title" style="color: ${cssColorVar};">${ann.title}</span>` : ''}
+                                    </div>
+                                    ${timeHtml}
+                                </div>
+                                <div class="announcement-text">${ann.text}</div>
+                            </div>
+                        </div>
+                        ${actionHtml}
+                    </div>
+                `;
+            };
+
+            // Render highlighted announcements (SHOW) normally
+            const initialAnnouncements = visibleAnnouncements.filter(ann => ann.visibility === 'SHOW');
+            const collapsedAnnouncements = visibleAnnouncements.filter(ann => ann.visibility !== 'SHOW');
+
+            if (initialAnnouncements.length === 0 && collapsedAnnouncements.length === 0) {
+                // If there are no announcements at all, hide everything
+                banner.style.display = 'none';
+                banner.innerHTML = '';
+                return;
+            }
+
+            if (initialAnnouncements.length === 0 && collapsedAnnouncements.length > 0) {
+                html += `
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 15px; color: #757575; font-size: 0.9em; flex-wrap: wrap;">
+                    <span style="user-select: none; -webkit-user-select: none;"><i class="fa-solid fa-bullhorn"></i> There are no new announcements...</span>
+                    <button id="announcements-toggle-btn" class="show-more-announcements" onclick="toggleAnnouncements()" style="margin: 0 !important; font-size: 1em;">
+                        <i class="fa-solid fa-chevron-down"></i> Show older
+                    </button>
+                </div>`;
+            } else {
+                html += `<div id="announcements-active-view" class="announcement-row-group">`;
+                initialAnnouncements.forEach(ann => {
+                    html += renderCardHtml(ann);
+                });
+                html += `</div>`;
+            }
+
+            // Render the rest in a collapsible container if they exist
+            if (collapsedAnnouncements.length > 0) {
+                html += `<div id="announcements-collapsed-view" class="announcements-collapsed announcement-row-group" style="max-height: 0px; opacity: 0; display: none;">`;
+                collapsedAnnouncements.forEach(ann => {
+                    html += renderCardHtml(ann);
+                });
+                html += `</div>`;
+
+                if (initialAnnouncements.length > 0) {
+                    html += `<button id="announcements-toggle-btn" class="show-more-announcements" onclick="toggleAnnouncements()"><i class="fa-solid fa-chevron-down"></i> Show older</button>`;
+                }
+            }
+
+            // Preserve expanded state before re-rendering
+            const existingCollapsedDiv = document.getElementById('announcements-collapsed-view');
+            const wasExpanded = existingCollapsedDiv && existingCollapsedDiv.dataset.expanded === 'true';
+
+            banner.innerHTML = html;
+            banner.style.display = 'flex';
+
+            updateAnnouncementCorners();
+
+            // Restore expanded state instantly if it was open before dismissal
+            if (wasExpanded) {
+                const newCollapsedDiv = document.getElementById('announcements-collapsed-view');
+                const newToggleBtn = document.getElementById('announcements-toggle-btn');
+                if (newCollapsedDiv && newToggleBtn) {
+                    newCollapsedDiv.style.display = 'flex';
+                    newCollapsedDiv.style.maxHeight = 'none'; // skip animation limitation for instant render
+                    newCollapsedDiv.style.opacity = '1';
+                    newCollapsedDiv.dataset.expanded = 'true';
+                    newToggleBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Hide older';
+
+                    // Small delay then calculate absolute height bounds so future toggles work correctly
+                    setTimeout(() => {
+                        if (newCollapsedDiv.dataset.expanded === 'true') {
+                            newCollapsedDiv.style.maxHeight = newCollapsedDiv.scrollHeight + 'px';
+                        }
+                    }, 50);
+                }
+            }
+
+            // Attach touch & mouse swipe listeners universally
+            const swipeables = banner.querySelectorAll('.swipeable-announcement');
+            swipeables.forEach(card => {
+                let startX = 0;
+                let currentX = 0;
+                let startY = 0;
+                let isDragging = false;
+                let hasMoved = false;
+                let intentLocked = false;   // true once we decide horizontal or vertical
+                let isHorizontal = false;   // true = horizontal swipe intent, false = vertical scroll
+                const row = card.closest('.announcement-row');
+                const annId = row.id.replace('ann-row-', '');
+
+                const getSiblings = () => {
+                    const group = row.closest('.announcement-row-group');
+                    if (!group) return [];
+                    const siblings = [];
+                    if (row.previousElementSibling && row.previousElementSibling.classList.contains('announcement-row')) {
+                        siblings.push(row.previousElementSibling.querySelector('.announcement-card'));
+                    }
+                    if (row.nextElementSibling && row.nextElementSibling.classList.contains('announcement-row')) {
+                        siblings.push(row.nextElementSibling.querySelector('.announcement-card'));
+                    }
+                    return siblings.filter(s => s); // remove nulls attached to elements without cards
+                };
+
+                const handleStart = (clientX, clientY) => {
+                    startX = clientX;
+                    startY = clientY;
+                    isDragging = true;
+                    hasMoved = false;
+                    intentLocked = false;
+                    isHorizontal = false;
+                    card.style.transition = 'none';
+
+                    getSiblings().forEach(sibling => {
+                        sibling.style.transition = 'none';
+                    });
+                };
+
+                const handleMove = (clientX, clientY, e) => {
+                    if (!isDragging) return;
+                    currentX = clientX;
+                    const diffX = currentX - startX;
+                    const diffY = clientY - startY;
+
+                    // On first significant move, determine gesture intent
+                    if (!intentLocked && (Math.abs(diffX) > 4 || Math.abs(diffY) > 4)) {
+                        intentLocked = true;
+                        isHorizontal = Math.abs(diffX) >= Math.abs(diffY);
+                    }
+
+                    // If intent is vertical (scroll), release control immediately
+                    if (intentLocked && !isHorizontal) {
+                        isDragging = false;
+                        card.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, border-radius 0.3s ease';
+                        card.style.transform = '';
+                        card.style.opacity = '';
+
+                        getSiblings().forEach(sibling => {
+                            sibling.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, border-radius 0.3s ease';
+                            sibling.style.transform = '';
+                        });
+                        return;
+                    }
+
+                    // Require at least 5px of horizontal movement before considering it a drag vs a click
+                    if (Math.abs(diffX) > 5) {
+                        hasMoved = true;
+                        card.classList.add('is-dragging');
+                        if (e && e.cancelable) e.preventDefault(); // Prevent scroll while dragging horizontally
+                    }
+
+                    if (!hasMoved) return;
+
+                    // Swipe left to dismiss (negative diffX)
+                    // Swipe right bounces back (positive diffX)
+                    let targetX = diffX;
+                    if (diffX < 0) {
+                        const triggerThreshold = Math.min(250, window.innerWidth * 0.4);
+                        card.style.transform = `translateX(${diffX}px)`;
+                        card.style.opacity = Math.max(0, 1 - (Math.abs(diffX) / triggerThreshold));
+                    } else if (diffX > 0) {
+                        const elasticStretch = (1 - Math.exp(-diffX / 150)) * 100;
+                        targetX = elasticStretch;
+                        card.style.transform = `translateX(${elasticStretch}px)`;
+                    }
+
+                    getSiblings().forEach(sibling => {
+                        sibling.style.transform = `translateX(${targetX * 0.04}px)`;
+                    });
+                };
+
+                const handleEnd = () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    card.classList.remove('is-dragging');
+
+                    if (!hasMoved) {
+                        // It was just a click, Re-enable smooth transitions and return
+                        card.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, border-radius 0.3s ease';
+                        getSiblings().forEach(sibling => {
+                            sibling.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, border-radius 0.3s ease';
+                        });
+                        return;
+                    }
+
+                    const diffX = currentX - startX;
+
+                    // Re-enable smooth transitions
+                    card.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, border-radius 0.3s ease';
+                    getSiblings().forEach(sibling => {
+                        sibling.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, border-radius 0.3s ease';
+                        sibling.style.transform = ''; // swap sibling back immediately
+                    });
+
+                    const triggerThreshold = Math.min(250, window.innerWidth * 0.4);
+
+                    if (diffX < -triggerThreshold) { // Swipe left threshold to dismiss
+                        dismissAnnouncement(annId, row);
+                    } else { // Snap back
+                        card.style.transform = '';
+                        card.style.opacity = '';
+                    }
+                    hasMoved = false;
+                };
+
+                // Touch Events
+                card.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+                card.addEventListener('touchmove', (e) => handleMove(e.touches[0].clientX, e.touches[0].clientY, e), { passive: false });
+                card.addEventListener('touchend', handleEnd);
+                card.addEventListener('touchcancel', handleEnd);
+
+                // Mouse Events
+                const onMouseMove = (e) => handleMove(e.clientX, e.clientY, e);
+                const onMouseUp = () => {
+                    handleEnd();
+                    window.removeEventListener('mousemove', onMouseMove);
+                    window.removeEventListener('mouseup', onMouseUp);
+                };
+
+                card.addEventListener('mousedown', (e) => {
+                    if (e.target.closest('button') || e.target.closest('a')) return;
+                    handleStart(e.clientX, e.clientY);
+                    window.addEventListener('mousemove', onMouseMove);
+                    window.addEventListener('mouseup', onMouseUp);
+                });
+            });
+        }
+
+        function handleActionClick(btn, link) {
+            // Prevent event from bubbling up to the card if needed, though they are siblings here
+            window.open(link, '_blank', 'noopener,noreferrer');
+        }
+
         function updateCourseMetadata(metadata) {
-            // The hidden form inputs for timetable are now updated dynamically when a timetable button is clicked
+            // Dynamically update the hidden form inputs using the fetched metadata
+            const timetableIdInput = document.getElementById('timetable-id-input');
+            const classSelectInput = document.getElementById('class-select');
+
+            if (timetableIdInput) {
+                timetableIdInput.value = metadata.timetable_id || '';
+            }
+            if (classSelectInput) {
+                classSelectInput.value = metadata.class_id || '';
+            }
 
             document.getElementById('course-code').textContent = metadata.code ? formatCourseCode(metadata.code) : 'Course Code';
 
@@ -4929,14 +6363,14 @@
                 if (professors.length > 0) {
                     professors.forEach(prof => {
                         const item = document.createElement('span');
-                        item.className = 'info-item professor-item';
+                        item.setAttribute('class', 'info-item professor-item');
 
                         let content = '';
                         if (prof.photo) {
                             content = `<img src="${prof.photo}" alt="${prof.name}" class="professor-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';">`;
-                            content += `<i class="fas fa-user-circle" style="display:none;"></i>`;
+                            content += `<i class="fa-solid fa-user-circle" style="display:none;"></i>`;
                         } else {
-                            content = '<i class="fas fa-user-circle"></i>';
+                            content = '<i class="fa-solid fa-user-circle"></i>';
                         }
                         content += ` ${prof.name}`;
 
@@ -4950,8 +6384,8 @@
                     });
                 } else {
                     const item = document.createElement('span');
-                    item.className = 'info-item';
-                    item.innerHTML = '<i class="fas fa-user-circle"></i> Instructor';
+                    item.setAttribute('class', 'info-item');
+                    item.innerHTML = '<i class="fa-solid fa-user-circle"></i> Instructor';
                     profContainer.appendChild(item);
                 }
 
@@ -4966,7 +6400,7 @@
             document.getElementById('course-type').textContent = courseType;
             const typeContainer = document.getElementById('course-type-container');
             if (typeContainer) {
-                typeContainer.innerHTML = courseType.toLowerCase() === 'elective' ? '<i class="far fa-circle"></i> <span id="course-type">Elective</span>' : '<i class="fas fa-exclamation-circle"></i> <span id="course-type">Compulsory</span>';
+                typeContainer.innerHTML = courseType.toLowerCase() === 'elective' ? '<i class="fa-regular fa-circle"></i> <span id="course-type">Elective</span>' : '<i class="fa-solid fa-exclamation-circle"></i> <span id="course-type">Compulsory</span>';
             }
             const hStart = metadata.holiday_startdate || metadata.holiday_start_date || metadata.holidaystartdate || metadata.holiday_start;
             updateWeekProgress(metadata.startdate, metadata.enddate, metadata.holidayweeks, hStart);
@@ -5066,7 +6500,7 @@
                 const moduleId = `#module-${module.id}`;
 
                 const navItem = document.createElement('a');
-                navItem.className = 'side-nav-item';
+                navItem.setAttribute('class', 'side-nav-item');
                 navItem.href = moduleId;
                 navItem.innerHTML = `<i class="${module.icon}"></i> <span>${module.title}</span>`;
                 navItem.addEventListener('click', handleNavClick);
@@ -5074,7 +6508,7 @@
 
                 if (mobileMenu) {
                     const mobileNavItem = document.createElement('a');
-                    mobileNavItem.className = 'mobile-fab-menu-item';
+                    mobileNavItem.setAttribute('class', 'mobile-fab-menu-item');
                     mobileNavItem.href = moduleId;
                     mobileNavItem.innerHTML = `${module.title} <i class="${module.icon}"></i>`;
                     mobileNavItem.addEventListener('click', (e) => {
@@ -5087,7 +6521,7 @@
                 if (module.type === 'project') {
                     html += generateProjectModuleHtml(module);
                 } else {
-                    const materialCount = module.materials.length;
+                    const materialCount = module.materials.filter(m => !m.isDescription).length;
                     let gridClass = 'materials-grid';
                     if (materialCount === 1) gridClass += ' materials-1';
                     else if (materialCount === 2) gridClass += ' materials-2';
@@ -5098,10 +6532,16 @@
                     ${module.moduleNumber ? `<span class="module-background-number">${module.moduleNumber}</span>` : ''}
                     <span class="module-title"><i class="${module.icon}"></i> ${module.title}</span>
                 </div>
-                <div class="module-content">
-                    <div class="${gridClass}">`;
+                <div class="module-content">`;
+
+                    let inGrid = false;
                     module.materials.forEach(material => {
-                        html += `
+                        if (material.isDescription) {
+                            if (inGrid) { html += `</div>`; inGrid = false; }
+                            html += `<div class="project-module-description">${material.text}</div>`;
+                        } else {
+                            if (!inGrid) { html += `<div class="${gridClass}">`; inGrid = true; }
+                            html += `
                     <div class="material-card ${material.fileTypeClass || ''}">
                         <div class="material-card-header">
                             <i class="${material.icon} material-icon"></i>
@@ -5111,13 +6551,14 @@
                             </div>
                         </div>
                         <div class="material-card-actions">
-                            ${material.viewLink ? `<button onclick="handleActionClick(this, '${material.viewLink}')" class="btn-blue"><span><i class="far fa-eye"></i> View</span></button>` : ''}
-${material.downloadLink ? `<button onclick="handleActionClick(this, '${material.downloadLink}')" class="btn-green"><span><i class="far fa-save"></i> Download</span></button>` : ''}
-${material.openLink ? `<button onclick="handleActionClick(this, '${material.openLink}')" class="btn-orange"><span><i class="fas fa-external-link-alt"></i> Open</span></button>` : ''}
+                            ${material.viewLink ? `<button onclick="handleActionClick(this, '${material.viewLink}')" class="btn-blue"><span><i class="fa-regular fa-eye"></i> View</span></button>` : ''}
+${material.downloadLink ? `<button onclick="handleActionClick(this, '${material.downloadLink}')" class="btn-green"><span><i class="fa-regular fa-save"></i> Download</span></button>` : ''}
+${material.openLink ? `<button onclick="handleActionClick(this, '${material.openLink}')" class="btn-orange"><span><i class="fa-solid fa-external-link-alt"></i> Open</span></button>` : ''}
                         </div>
                     </div>`;
+                        }
                     });
-                    html += `</div>`;
+                    if (inGrid) { html += `</div>`; }
                     module.funFacts.forEach(funFact => {
                         html += `<div class="fun-fact">${funFact.text}</div>`;
                     });
@@ -5230,7 +6671,7 @@ ${material.openLink ? `<button onclick="handleActionClick(this, '${material.open
                     const percentage = parseFloat(metadata[item.key]) || 0;
                     if (percentage > 0) {
                         const segment = document.createElement('div');
-                        segment.className = 'distribution-segment';
+                        segment.setAttribute('class', 'distribution-segment');
                         segment.style.width = `${percentage}%`;
 
                         const statusKey = item.key + '_status';
@@ -5262,7 +6703,7 @@ ${material.openLink ? `<button onclick="handleActionClick(this, '${material.open
                         'Attendance': 'rgba(255,255,255,0.55)',
                     };
                     const legendItem = document.createElement('div');
-                    legendItem.className = 'legend-item';
+                    legendItem.setAttribute('class', 'legend-item');
                     legendItem.style.width = `${totalPercentage}%`;
                     legendItem.textContent = assessment.name;
                     legendItem.style.color = legendColors[assessment.name] || assessment.colors[0];
@@ -5301,12 +6742,12 @@ ${material.openLink ? `<button onclick="handleActionClick(this, '${material.open
                 setTimeout(() => safeRemove(oldest), 300);
             }
             const notification = document.createElement('div');
-            notification.className = `in-page-notification in-page-notification-${type}`;
+            notification.setAttribute('class', `in-page-notification in-page-notification-${type}`);
             let icon = 'info-circle';
             if (type === 'success') icon = 'check-circle';
             if (type === 'error') icon = 'times-circle';
             if (type === 'warning') icon = 'exclamation-circle';
-            notification.innerHTML = `<i class="fas fa-${icon}"></i><div style="flex-grow:1;"><strong>${title}</strong><br>${message}</div><button class="notification-close">&times;</button>`;
+            notification.innerHTML = `<i class="fa-solid fa-${icon}"></i><div style="flex-grow:1;"><strong>${title}</strong><br>${message}</div><button class="notification-close">&times;</button>`;
             area.appendChild(notification);
             notification.querySelector('.notification-close').onclick = (e) => {
                 e.preventDefault();
@@ -5336,6 +6777,33 @@ ${material.openLink ? `<button onclick="handleActionClick(this, '${material.open
         window.addEventListener('load', init);
     </script>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsaZloy5J41I-hj9X4Z6tgS8cTcWAFqNg",
+            authDomain: "attendance-logger-452915.firebaseapp.com",
+            projectId: "attendance-logger-452915",
+            storageBucket: "attendance-logger-452915.firebasestorage.app",
+            messagingSenderId: "740588046540",
+            appId: "1:740588046540:web:1da835a0d7dd68cb199a69",
+            measurementId: "G-PMGY5GD2FQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const messaging = getMessaging(app);
+
+        // Expose to global scope for the standard JS block to access during dynamic button generation
+        window.messaging = messaging;
+        window.getToken = getToken;
+
+        onMessage(messaging, (payload) => {
+            if (typeof showImprovedNotification === 'function') {
+                showImprovedNotification('info', payload.notification.title, payload.notification.body, 10000);
+            }
+        });
+    </script>
 </body>
 
 </html>

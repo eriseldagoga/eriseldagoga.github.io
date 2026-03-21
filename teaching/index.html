@@ -2780,7 +2780,6 @@
         html[data-theme="dark"] .announcement-card {
             background-color: var(--dark-surface-light);
             border-color: var(--dark-border);
-            border-left-color: var(--card-accent, var(--primary-color)) !important;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             color: var(--dark-text);
         }
@@ -2805,7 +2804,6 @@
             html:not([data-theme="light"]) .announcement-card {
                 background-color: var(--dark-surface-light);
                 border-color: var(--dark-border);
-                border-left-color: var(--card-accent, var(--primary-color)) !important;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
                 color: var(--dark-text);
             }
@@ -6122,7 +6120,7 @@
                 html += `
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 15px; color: #757575; font-size: 0.9em; flex-wrap: wrap;">
                     <span style="user-select: none; -webkit-user-select: none;"><i class="fa-solid fa-bullhorn"></i> There are no new announcements...</span>
-                    <button id="announcements-toggle-btn" class="show-more-announcements" onclick="toggleAnnouncements()" style="margin: 0 !important; font-size: 1em;">
+                    <button id="announcements-toggle-btn" class="show-more-announcements" onclick="toggleAnnouncements()" style="margin: 0 0 0 auto !important; font-size: 1em;">
                         <i class="fa-solid fa-chevron-down"></i> Show older
                     </button>
                 </div>`;

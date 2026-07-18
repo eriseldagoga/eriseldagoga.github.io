@@ -1,0 +1,491 @@
+        /* ==================================================================
+           Landing page — page-specific styles.
+           Shared design system comes from /css/main.css (linked above);
+           this page intentionally keeps its own minimal look and overrides
+           the few main.css rules that don't apply here.
+           ================================================================== */
+        /* === DESIGN TOKENS === */
+        :root {
+            --primary-color: #3949ab;
+            --primary-dark: #1a237e;
+            --secondary-color: #ffa726;
+            --accent-color: #9c27b0;
+            --text-color: #333333;
+            --text-light: #ffffff;
+            --bg-color: #ffffff;
+            --surface-color: #e0e0e0;
+
+            --dark-bg: #0c0e14;
+            --dark-surface: #151924;
+            --dark-surface-light: #1d2331;
+            --dark-text: #e6eaf0;
+            --dark-text-muted: #95a0b1;
+            --dark-border: #2b3648;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            background-color: var(--bg-color);
+            overscroll-behavior: none;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            font-family: 'Google Sans Flex', 'Roboto', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.5;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: var(--bg-color);
+        }
+
+        /* === LAYOUT === */
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            width: 100%;
+            max-width: 800px;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* === PROFILE === */
+        .profile-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .profile-photo {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 16px rgba(57, 73, 171, 0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 24px rgba(57, 73, 171, 0.25);
+        }
+
+        .profile-name {
+            font-size: 4.5em;
+            font-weight: 300;
+            margin: 12px 0 24px 0;
+            color: var(--text-color);
+            font-family: "Playwrite GB J", cursive;
+            font-optical-sizing: auto;
+            font-style: italic;
+            line-height: 1.1;
+        }
+
+        .profile-subtitle {
+            font-size: 0.85em;
+            margin: 0;
+            color: #888;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .profile-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 14px;
+        }
+
+        .profile-links a {
+            color: var(--primary-dark);
+            font-size: 1.4em;
+            transition: color 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+        }
+
+        .profile-links a:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        /* === BUTTON GROUPS === */
+        .button-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            justify-content: center;
+        }
+
+        .button-group a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .group-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 22px;
+            font-family: 'Google Sans Flex', 'Roboto', sans-serif;
+            font-size: 0.92em;
+            font-weight: 500;
+            color: #444;
+            background-color: #f0f0f3;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: border-radius 0.25s cubic-bezier(.4, 0, .2, 1),
+                box-shadow 0.25s cubic-bezier(.4, 0, .2, 1),
+                filter 0.15s ease,
+                color 0.25s ease,
+                background-color 0.25s ease;
+        }
+
+        .group-btn i,
+        .group-btn svg {
+            font-size: 1em;
+            color: var(--primary-color);
+            transition: color 0.25s ease;
+        }
+
+        /* Row-aware border radii (applied via JS) */
+        .group-btn.first-in-row {
+            border-top-left-radius: 20px !important;
+            border-bottom-left-radius: 20px !important;
+        }
+
+        .group-btn.last-in-row {
+            border-top-right-radius: 20px !important;
+            border-bottom-right-radius: 20px !important;
+        }
+
+        .group-btn.only-in-row {
+            border-radius: 20px !important;
+        }
+
+        .group-btn:hover {
+            border-radius: 20px !important;
+            box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.25), 0 2px 5px rgba(0, 0, 0, 0.15);
+            filter: brightness(1.03);
+        }
+
+        .group-btn:active {
+            border-radius: 20px;
+            transform: scale(0.97);
+            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.1);
+            filter: brightness(0.9);
+        }
+
+        /* === FOOTER === */
+        .footer {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+            color: var(--primary-dark);
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .footer-tools {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            /* width/height/box-shadow reset the boxed toggle from main.css —
+               here it's a plain icon */
+            width: auto;
+            height: auto;
+            box-shadow: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.25em;
+            transition: transform 0.15s ease, color 0.2s ease;
+            opacity: 0.8;
+            padding: 8px;
+            border: none;
+            background: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.15);
+            opacity: 1;
+            box-shadow: none;
+            color: var(--primary-color);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        /* The FontAwesome kit replaces the <i> with an <svg> that keeps the
+           .theme-toggle class; the height:auto reset above would let that svg
+           expand to the full container width. Pin it to icon size. */
+        svg.theme-toggle {
+            height: 1em;
+            width: auto;
+        }
+
+        .social-links {
+            margin-bottom: 10px;
+        }
+
+        .social-links a {
+            color: var(--primary-dark);
+            font-size: 1.0em;
+            margin: 0 10px;
+            transition: color 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer .copyright {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin: 0;
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        /* === CAT COMPANION ===
+           Sizing, animation, and bubble styling are shared with teaching/index.html via
+           main.css. This page only overrides the responsive breakpoints (below), since it
+           has no mobile FAB nav to hand the cat's space off to. */
+
+        /* === RESPONSIVE === */
+        /* main.css removes the cat below 1400px in favour of the mobile FAB nav (not present
+           on this page); keep it visible down to 1000px instead, where it shrinks away. */
+        @media (max-width: 1400px) {
+            #cat-companion {
+                display: block;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            #cat-companion {
+                transform: translateY(120%) scale(0.5);
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page-wrapper {
+                padding: 30px 16px;
+            }
+
+            .profile-photo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .group-btn {
+                padding: 11px 16px;
+                font-size: 0.85em;
+            }
+        }
+
+
+        /* ============================== */
+        /*    DARK THEME — EXPLICIT       */
+        /* ============================== */
+        html[data-theme="dark"] {
+            color-scheme: dark;
+            background-color: var(--dark-bg);
+        }
+
+        html[data-theme="dark"] body {
+            color: var(--dark-text);
+            background: var(--dark-bg);
+        }
+
+        html[data-theme="dark"] .profile-name {
+            color: var(--dark-text);
+        }
+
+        html[data-theme="dark"] .profile-subtitle {
+            color: var(--dark-text-muted);
+        }
+
+        html[data-theme="dark"] .profile-links a {
+            color: var(--dark-text-muted);
+        }
+
+        html[data-theme="dark"] .profile-links a:hover {
+            color: #8c9eff;
+        }
+
+        html[data-theme="dark"] .profile-photo {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        html[data-theme="dark"] .group-btn {
+            background-color: var(--dark-surface-light);
+            color: var(--dark-text);
+        }
+
+        html[data-theme="dark"] .group-btn i,
+        html[data-theme="dark"] .group-btn svg {
+            color: #8c9eff;
+        }
+
+        html[data-theme="dark"] .group-btn:hover {
+            box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0, 0, 0, 0.3);
+            filter: brightness(1.1);
+        }
+
+        html[data-theme="dark"] .group-btn:active {
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);
+            filter: brightness(0.85);
+        }
+
+        html[data-theme="dark"] .theme-toggle {
+            color: var(--dark-text);
+            /* main.css's dark theme paints the boxed toggle (surface bg +
+               border) at this same specificity — keep it a plain icon here */
+            background: none;
+            border: none;
+            box-shadow: none;
+        }
+
+        html[data-theme="dark"] .footer {
+            color: var(--dark-text-muted);
+        }
+
+        html[data-theme="dark"] .social-links a {
+            color: var(--dark-text-muted);
+        }
+
+        html[data-theme="dark"] .social-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* ============================== */
+        /*    DARK THEME — AUTO (SYSTEM)  */
+        /* ============================== */
+        @media (prefers-color-scheme: dark) {
+            html:not([data-theme="light"]) {
+                color-scheme: dark;
+                background-color: var(--dark-bg);
+            }
+
+            html:not([data-theme="light"]) body {
+                color: var(--dark-text);
+                background: var(--dark-bg);
+            }
+
+            html:not([data-theme="light"]) .profile-name {
+                color: var(--dark-text);
+            }
+
+            html:not([data-theme="light"]) .profile-subtitle {
+                color: var(--dark-text-muted);
+            }
+
+            html:not([data-theme="light"]) .profile-links a {
+                color: var(--dark-text-muted);
+            }
+
+            html:not([data-theme="light"]) .profile-links a:hover {
+                color: #8c9eff;
+            }
+
+            html:not([data-theme="light"]) .profile-photo {
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            }
+
+            html:not([data-theme="light"]) .group-btn {
+                background-color: var(--dark-surface-light);
+                color: var(--dark-text);
+            }
+
+            html:not([data-theme="light"]) .group-btn i,
+            html:not([data-theme="light"]) .group-btn svg {
+                color: #8c9eff;
+            }
+
+            html:not([data-theme="light"]) .group-btn:hover {
+                box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0, 0, 0, 0.3);
+                filter: brightness(1.1);
+            }
+
+            html:not([data-theme="light"]) .group-btn:active {
+                box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);
+                filter: brightness(0.85);
+            }
+
+            html:not([data-theme="light"]) .theme-toggle {
+                color: var(--dark-text);
+                /* keep in sync with the manual-dark rule above */
+                background: none;
+                border: none;
+                box-shadow: none;
+            }
+
+            html:not([data-theme="light"]) .footer {
+                color: var(--dark-text-muted);
+            }
+
+            html:not([data-theme="light"]) .social-links a {
+                color: var(--dark-text-muted);
+            }
+
+            html:not([data-theme="light"]) .social-links a:hover {
+                color: var(--secondary-color);
+            }
+        }
+
+        /* Explicit light override */
+        [data-theme="light"] {
+            color-scheme: light;
+        }

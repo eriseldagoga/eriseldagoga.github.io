@@ -10,7 +10,11 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap"
         rel="stylesheet">
-    <script src="https://kit.fontawesome.com/4dd5c549ad.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+GB+J:ital,wght@0,100..400;1,100..400&display=swap"
+        rel="stylesheet">
+
 
     <!-- Instant theme application to prevent flash -->
     <script>
@@ -29,561 +33,11 @@
         })();
     </script>
 
-    <style>
-        /* === DESIGN TOKENS === */
-        :root {
-            --primary-color: #3949ab;
-            --primary-dark: #1a237e;
-            --secondary-color: #ffa726;
-            --accent-color: #9c27b0;
-            --text-color: #333333;
-            --text-light: #ffffff;
-            --bg-color: #ffffff;
-            --surface-color: #e0e0e0;
-
-            --dark-bg: #0c0e14;
-            --dark-surface: #151924;
-            --dark-surface-light: #1d2331;
-            --dark-text: #e6eaf0;
-            --dark-text-muted: #95a0b1;
-            --dark-border: #2b3648;
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        html {
-            background-color: var(--bg-color);
-            overscroll-behavior: none;
-        }
-
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            font-family: 'Google Sans Flex', 'Roboto', sans-serif;
-            color: var(--text-color);
-            overflow-x: hidden;
-            line-height: 1.5;
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            min-height: 100dvh;
-            background: var(--bg-color);
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        /* === LAYOUT === */
-        .page-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex-grow: 1;
-            width: 100%;
-            max-width: 800px;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* === PROFILE === */
-        .profile-section {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .profile-photo {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 4px 16px rgba(57, 73, 171, 0.18);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .profile-photo:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 24px rgba(57, 73, 171, 0.25);
-        }
-
-        .profile-name {
-            font-size: 2em;
-            font-weight: 700;
-            margin: 14px 0 4px 0;
-            color: var(--text-color);
-        }
-
-        .profile-subtitle {
-            font-size: 0.95em;
-            margin: 0;
-            color: #888;
-            font-weight: 400;
-        }
-
-        .profile-links {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 14px;
-        }
-
-        .profile-links a {
-            color: var(--primary-dark);
-            font-size: 1.4em;
-            transition: color 0.3s ease, transform 0.2s ease;
-            text-decoration: none;
-            display: inline-flex;
-        }
-
-        .profile-links a:hover {
-            color: var(--primary-color);
-            transform: scale(1.1);
-        }
-
-        /* === BUTTON GROUPS === */
-        .button-groups {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 100%;
-        }
-
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2px;
-            justify-content: center;
-        }
-
-        .button-group a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .group-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 22px;
-            font-family: 'Google Sans Flex', 'Roboto', sans-serif;
-            font-size: 0.92em;
-            font-weight: 500;
-            color: #444;
-            background-color: #f0f0f3;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            -webkit-user-select: none;
-            user-select: none;
-            transition: border-radius 0.25s cubic-bezier(.4, 0, .2, 1),
-                box-shadow 0.25s cubic-bezier(.4, 0, .2, 1),
-                filter 0.15s ease,
-                color 0.25s ease,
-                background-color 0.25s ease;
-        }
-
-        .group-btn i,
-        .group-btn svg {
-            font-size: 1em;
-            color: var(--primary-color);
-            transition: color 0.25s ease;
-        }
-
-        /* Row-aware border radii (applied via JS) */
-        .group-btn.first-in-row {
-            border-top-left-radius: 20px !important;
-            border-bottom-left-radius: 20px !important;
-        }
-
-        .group-btn.last-in-row {
-            border-top-right-radius: 20px !important;
-            border-bottom-right-radius: 20px !important;
-        }
-
-        .group-btn.only-in-row {
-            border-radius: 20px !important;
-        }
-
-        .group-btn:hover {
-            border-radius: 20px !important;
-            box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.25), 0 2px 5px rgba(0, 0, 0, 0.15);
-            filter: brightness(1.03);
-        }
-
-        .group-btn:active {
-            border-radius: 20px;
-            transform: scale(0.97);
-            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.1);
-            filter: brightness(0.9);
-        }
-
-        /* === FOOTER === */
-        .footer {
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-            padding: 20px;
-            color: var(--primary-dark);
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        .footer-tools {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .theme-toggle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-color);
-            cursor: pointer;
-            font-size: 1.25em;
-            /* Increased size to match the feel of the button before */
-            transition: transform 0.15s ease, color 0.2s ease;
-            opacity: 0.8;
-            padding: 8px;
-            /* Give it a larger click target */
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.15);
-            opacity: 1;
-            color: var(--primary-color);
-        }
-
-        .theme-toggle:active {
-            transform: scale(0.95);
-        }
-
-        .social-links {
-            margin-bottom: 10px;
-        }
-
-        .social-links a {
-            color: var(--primary-dark);
-            font-size: 1.0em;
-            margin: 0 10px;
-            transition: color 0.3s;
-            display: inline-block;
-            text-decoration: none;
-        }
-
-        .social-links a:hover {
-            color: var(--secondary-color);
-        }
-
-        .footer .copyright {
-            font-size: 0.75em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-            margin: 0;
-            color: inherit;
-            opacity: 0.7;
-        }
-
-        /* === RESPONSIVE === */
-        @media (max-width: 600px) {
-            .page-wrapper {
-                padding: 30px 16px;
-            }
-
-            .profile-photo {
-                width: 100px;
-                height: 100px;
-            }
-
-            .group-btn {
-                padding: 11px 16px;
-                font-size: 0.85em;
-            }
-        }
-
-
-        /* ============================== */
-        /*    DARK THEME — EXPLICIT       */
-        /* ============================== */
-        html[data-theme="dark"] {
-            color-scheme: dark;
-            background-color: var(--dark-bg);
-        }
-
-        html[data-theme="dark"] body {
-            color: var(--dark-text);
-            background: var(--dark-bg);
-        }
-
-        html[data-theme="dark"] .profile-name {
-            color: var(--dark-text);
-        }
-
-        html[data-theme="dark"] .profile-subtitle {
-            color: var(--dark-text-muted);
-        }
-
-        html[data-theme="dark"] .profile-links a {
-            color: var(--dark-text-muted);
-        }
-
-        html[data-theme="dark"] .profile-links a:hover {
-            color: #8c9eff;
-        }
-
-        html[data-theme="dark"] .profile-photo {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-        }
-
-        html[data-theme="dark"] .group-btn {
-            background-color: var(--dark-surface-light);
-            color: var(--dark-text);
-        }
-
-        html[data-theme="dark"] .group-btn i,
-        html[data-theme="dark"] .group-btn svg {
-            color: #8c9eff;
-        }
-
-        html[data-theme="dark"] .group-btn:hover {
-            box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0, 0, 0, 0.3);
-            filter: brightness(1.1);
-        }
-
-        html[data-theme="dark"] .group-btn:active {
-            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);
-            filter: brightness(0.85);
-        }
-
-        html[data-theme="dark"] .theme-toggle {
-            color: var(--dark-text);
-        }
-
-        html[data-theme="dark"] .footer {
-            color: var(--dark-text-muted);
-        }
-
-        html[data-theme="dark"] .social-links a {
-            color: var(--dark-text-muted);
-        }
-
-        html[data-theme="dark"] .social-links a:hover {
-            color: var(--secondary-color);
-        }
-
-
-        /* ============================== */
-        /*    DARK THEME — AUTO (SYSTEM)  */
-        /* ============================== */
-        @media (prefers-color-scheme: dark) {
-            html:not([data-theme="light"]) {
-                color-scheme: dark;
-                background-color: var(--dark-bg);
-            }
-
-            html:not([data-theme="light"]) body {
-                color: var(--dark-text);
-                background: var(--dark-bg);
-            }
-
-            html:not([data-theme="light"]) .profile-name {
-                color: var(--dark-text);
-            }
-
-            html:not([data-theme="light"]) .profile-subtitle {
-                color: var(--dark-text-muted);
-            }
-
-            html:not([data-theme="light"]) .profile-links a {
-                color: var(--dark-text-muted);
-            }
-
-            html:not([data-theme="light"]) .profile-links a:hover {
-                color: #8c9eff;
-            }
-
-            html:not([data-theme="light"]) .profile-photo {
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-            }
-
-            html:not([data-theme="light"]) .group-btn {
-                background-color: var(--dark-surface-light);
-                color: var(--dark-text);
-            }
-
-            html:not([data-theme="light"]) .group-btn i,
-            html:not([data-theme="light"]) .group-btn svg {
-                color: #8c9eff;
-            }
-
-            html:not([data-theme="light"]) .group-btn:hover {
-                box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.2), 0 2px 5px rgba(0, 0, 0, 0.3);
-                filter: brightness(1.1);
-            }
-
-            html:not([data-theme="light"]) .group-btn:active {
-                box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);
-                filter: brightness(0.85);
-            }
-
-            html:not([data-theme="light"]) .theme-toggle {
-                color: var(--dark-text);
-            }
-
-            html:not([data-theme="light"]) .footer {
-                color: var(--dark-text-muted);
-            }
-
-            html:not([data-theme="light"]) .social-links a {
-                color: var(--dark-text-muted);
-            }
-
-            html:not([data-theme="light"]) .social-links a:hover {
-                color: var(--secondary-color);
-            }
-        }
-
-        /* Explicit light override */
-        [data-theme="light"] {
-            color-scheme: light;
-        }
-    </style>
-
-    <script>
-        /* === SMART BUTTON GROUP ROW DETECTION === */
-        function updateButtonGroupRadii() {
-            document.querySelectorAll('.button-group').forEach(group => {
-                const buttons = Array.from(group.querySelectorAll('.group-btn'));
-                if (!buttons.length) return;
-
-                // Clear previous classes
-                buttons.forEach(btn => {
-                    btn.classList.remove('first-in-row', 'last-in-row', 'only-in-row');
-                });
-
-                // Group buttons by visual row (same offsetTop)
-                let rows = [];
-                let currentRow = [buttons[0]];
-                let currentTop = buttons[0].offsetTop;
-
-                for (let i = 1; i < buttons.length; i++) {
-                    const btn = buttons[i];
-                    if (Math.abs(btn.offsetTop - currentTop) < 4) {
-                        // Same row (4px tolerance for sub-pixel differences)
-                        currentRow.push(btn);
-                    } else {
-                        rows.push(currentRow);
-                        currentRow = [btn];
-                        currentTop = btn.offsetTop;
-                    }
-                }
-                rows.push(currentRow);
-
-                // Apply row-aware classes
-                rows.forEach(row => {
-                    if (row.length === 1) {
-                        row[0].classList.add('only-in-row');
-                    } else {
-                        row[0].classList.add('first-in-row');
-                        row[row.length - 1].classList.add('last-in-row');
-                    }
-                });
-            });
-        }
-
-        /* === THEME TOGGLE === */
-        function setupThemeToggle() {
-            const KEY = 'theme-preference';
-            const ICON = document.getElementById('theme-toggle-icon');
-            if (!ICON) return;
-
-            const icons = { auto: 'fa-solid fa-circle-half-stroke', light: 'fa-regular fa-sun', dark: 'fa-regular fa-moon' };
-
-            const applyTheme = (theme) => {
-                document.documentElement.setAttribute('data-theme', theme);
-                localStorage.setItem(KEY, theme);
-                updateUI(theme);
-                // Update meta theme-color for browser chrome
-                const isDark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.remove());
-                const meta = document.createElement('meta');
-                meta.name = 'theme-color';
-                meta.content = isDark ? '#0c0e14' : '#ffffff';
-                document.head.appendChild(meta);
-            };
-
-            const updateUI = (theme) => {
-                const iconClass = icons[theme] || icons.auto;
-                const label = theme.charAt(0).toUpperCase() + theme.slice(1);
-                // Replace innerHTML so FontAwesome processes the fresh <i> tag
-                ICON.innerHTML = `<i class="${iconClass}" aria-hidden="true"></i>`;
-                ICON.setAttribute('aria-label', `Theme: ${label}`);
-                ICON.title = `Theme: ${label}`;
-            };
-
-            ICON.addEventListener('click', () => {
-                const currentPref = localStorage.getItem(KEY) || 'auto';
-                const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                let newPref;
-
-                if (isSystemDark) {
-                    if (currentPref === 'auto' || currentPref === 'dark') {
-                        newPref = 'light';
-                    } else {
-                        newPref = 'auto';
-                    }
-                } else {
-                    if (currentPref === 'auto' || currentPref === 'light') {
-                        newPref = 'dark';
-                    } else {
-                        newPref = 'auto';
-                    }
-                }
-                applyTheme(newPref);
-            });
-
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-                if (localStorage.getItem(KEY) === 'auto') {
-                    applyTheme('auto');
-                }
-            });
-
-            applyTheme(localStorage.getItem(KEY) || 'auto');
-        }
-
-        /* === YEAR === */
-        function updateYear() {
-            const el = document.getElementById('currentYear');
-            if (el) el.textContent = new Date().getFullYear();
-        }
-
-        /* === INIT === */
-        document.addEventListener('DOMContentLoaded', function () {
-            updateYear();
-            setupThemeToggle();
-            updateButtonGroupRadii();
-            window.addEventListener('resize', updateButtonGroupRadii);
-        });
-    </script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="js/scripts.js"></script>
+    <script src="https://kit.fontawesome.com/4dd5c549ad.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -591,11 +45,14 @@
     <div class="page-wrapper">
         <div class="profile-section">
             <img src="/miscellaneous/profile.jpg" class="profile-photo" alt="Eriselda Goga">
-            <p class="profile-name">Eriselda Goga</p>
-            <p class="profile-subtitle">Welcome to my website!</p>
+            <p class="profile-name">welcome</p>
+            <p class="profile-subtitle">Eriselda Goga</p>
             <div class="profile-links">
                 <a href="https://www.linkedin.com/in/eriselda-goga/" aria-label="LinkedIn">
                     <i class="fa-brands fa-square-linkedin"></i>
+                </a>
+                <a href="https://github.com/eriseldagoga" aria-label="GitHub">
+                    <i class="fa-brands fa-github"></i>
                 </a>
                 <a href="mailto:egoga@epoka.edu.al" aria-label="Email">
                     <i class="fa-solid fa-envelope"></i>
@@ -605,11 +62,11 @@
 
         <div class="button-groups">
             <div class="button-group">
-                <a href="https://www.researchgate.net/profile/Eriselda-Goga">
+                <a href="https://scholar.google.com/citations?user=BaXtdscAAAAJ">
                     <div class="group-btn"><i class="fa-solid fa-flask"></i> Research</div>
                 </a>
-                <a href="https://eriseldagoga.com/teaching/">
-                    <div class="group-btn"><i class="fa-solid fa-chalkboard-user"></i> Teaching</div>
+                <a href="/teaching/">
+                    <div class="group-btn"><i class="fa-solid fa-chalkboard-teacher"></i> Teaching</div>
                 </a>
             </div>
         </div>
@@ -617,15 +74,18 @@
 
     <footer class="footer">
         <div class="footer-tools">
-            <span id="theme-toggle-icon" class="theme-toggle" aria-label="Theme: Auto" title="Theme: Auto" role="button"
-                tabindex="0">
-                <i class="fa-solid fa-circle-half-stroke" aria-hidden="false"></i>
-            </span>
+            <i id="theme-toggle-icon" class="theme-toggle fa-solid fa-circle-half-stroke" aria-label="Theme: Auto"
+                title="Theme: Auto" aria-hidden="false" role="button" tabindex="0"></i>
         </div>
         <p class="copyright"><i class="fa-regular fa-copyright"></i> 2026–<span id="currentYear"></span> Eriselda Goga.
             All
             Rights Reserved.</p>
     </footer>
+
+    <div id="cat-companion">
+        <div id="cat-speech-bubble"></div>
+        <img id="cat-image" src="/miscellaneous/catto.webp" alt="A friendly cat companion">
+    </div>
 </body>
 
 </html>

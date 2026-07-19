@@ -18,8 +18,8 @@
    ========================================================================== */
 window.TEACHING_CONFIG = {
     // --- Supabase (public course page + admin) ---
-    supabaseUrl: 'https://sreqxyznaymvksygradu.supabase.co',
-    supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZXF4eXpuYXltdmtzeWdyYWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMDQ5NzksImV4cCI6MjA5NTc4MDk3OX0.-B-vzU8ZRkUnEp697N0nclLvomdP2k-dt9fPcJNV-gY',
+    supabaseUrl: 'https://ouubvgsozeflpyhvmpjz.supabase.co',
+    supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91dWJ2Z3NvemVmbHB5aHZtcGp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ0NDczMTYsImV4cCI6MjEwMDAyMzMxNn0.tzF0-yam2km2Gmt2ZpZZgpyRnQ6htZgUEoHmc9X6HWk',
 
     // --- Google Sign-In (admin login only; public page ignores this) ---
     googleClientId: '740588046540-975b4g8i4915hps31p1ioi0e000f4boi.apps.googleusercontent.com',
@@ -36,12 +36,12 @@ window.TEACHING_CONFIG = {
 
     // --- Branding / links shown in the footer of both pages ---
     owner: {
-        name: 'Bredli Plaku',
-        email: 'bplaku@epoka.edu.al',
-        cvUrl: 'https://eis.epoka.edu.al/cv/fullcv/655',
+        name: 'Eriselda Goga',
+        email: 'egoga@epoka.edu.al',
+        cvUrl: 'https://eis.epoka.edu.al/cv/fullcv/486',
         homeUrl: '/',              // where the footer "home" icon points
         faviconUrl: '/favicon.png', // browser-tab icon
-        startYear: 2023,           // first year of the copyright range
+        startYear: 2026,           // first year of the copyright range
     },
 
     // --- Default colour palette. Applied to both the public page and admin.

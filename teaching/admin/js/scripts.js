@@ -1383,6 +1383,31 @@
     let _driveToken = null;         // { value, expiresAt }
     let _driveTokenClient = null;
     let _pickerApiLoaded = false;
+    let _pickerScrollY = 0;
+    let _pickerScrollLocked = false;
+
+    // Freeze the page while the picker is up. The dialog itself is pinned viewport-fixed in
+    // CSS, so pinning the body (fixed at its current scroll offset) can't misplace it — it
+    // just stops Google's internal window.scrollTo from moving the page underneath.
+    function lockPickerScroll() {
+      if (_pickerScrollLocked) return;
+      _pickerScrollY = window.scrollY || window.pageYOffset || 0;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${_pickerScrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      _pickerScrollLocked = true;
+    }
+
+    function unlockPickerScroll() {
+      if (!_pickerScrollLocked) return;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      window.scrollTo(0, _pickerScrollY);
+      _pickerScrollLocked = false;
+    }
 
     function loadPickerApi() {
       return new Promise((resolve, reject) => {
@@ -1422,31 +1447,48 @@
       if (!inp) return;
       try {
         const [token] = await Promise.all([getDriveToken(), loadPickerApi()]);
+        // Three tabs mirroring the standard Google Drive picker:
+        //  • Recent      — RECENTLY_PICKED
+        //  • My Drive    — a plain DocsView shows ALL of the user's own Drive files with
+        //                  real folder browsing (adding setEnableDrives here is what had
+        //                  turned this tab into "Shared drives" before).
+        //  • Shared drives — a second DocsView with setEnableDrives(true).
         const myDrive = new google.picker.DocsView(google.picker.ViewId.DOCS)
           .setIncludeFolders(true).setSelectFolderEnabled(false);
         const sharedDrives = new google.picker.DocsView(google.picker.ViewId.DOCS)
           .setEnableDrives(true).setIncludeFolders(true).setSelectFolderEnabled(false);
-        // Size the dialog to the viewport (the CSS override then keeps it centred), so it
-        // stays usable on phones instead of overflowing at Google's fixed default size.
+        // Size the dialog to the viewport (CSS also clamps it), so it stays usable on
+        // phones instead of overflowing at Google's fixed default size.
         const w = Math.min(1051, Math.max(320, Math.floor(window.innerWidth * 0.95)));
         const h = Math.min(650, Math.max(380, Math.floor(window.innerHeight * 0.9)));
         const builder = new google.picker.PickerBuilder()
           .setAppId(GOOGLE_APP_ID)
           .setOrigin(window.location.protocol + '//' + window.location.host)
           .setOAuthToken(token)
+          .addView(google.picker.ViewId.RECENTLY_PICKED)
           .addView(myDrive)
           .addView(sharedDrives)
           .setSize(w, h)
           .setCallback((data) => onDrivePicked(data, inp));
         if (GOOGLE_API_KEY) builder.setDeveloperKey(GOOGLE_API_KEY);
+        lockPickerScroll();          // freeze the page before the dialog appears
         builder.build().setVisible(true);
       } catch (e) {
+        unlockPickerScroll();
         toast('Could not open Google Drive: ' + e.message, 'err');
       }
     }
 
     function onDrivePicked(data, inp) {
-      if (!data || data.action !== google.picker.Action.PICKED) return;
+      // The picker occasionally leaves the busy cursor set after LOADED fires; clear it
+      // defensively on every callback so it can't get stuck once the dialog is up.
+      document.body.style.cursor = '';
+      if (!data) return;
+      // LOADED just means the dialog rendered — keep the scroll lock in place. Any other
+      // terminal action (PICKED / CANCEL) closes the dialog, so release the page then.
+      if (data.action === google.picker.Action.LOADED) return;
+      unlockPickerScroll();
+      if (data.action !== google.picker.Action.PICKED) return;
       const doc = data.docs && data.docs[0];
       if (!doc) return;
       inp.value = doc.url || `https://drive.google.com/file/d/${doc.id}/view`;

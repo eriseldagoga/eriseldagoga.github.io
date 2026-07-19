@@ -1371,19 +1371,20 @@
       gap: 10px;
     }
 
-    /* Google Drive Picker renders its own fixed dialog with an iframe inside. The site's
-       global `iframe { position:absolute; top:-335px; left:-64px; width:106.4% }` rule
-       (used for the timetable embed) otherwise crops it into an offset square — undo that
-       just for the picker, and lift it above the edit modal (z-index 1000) / toast (2000). */
+    /* Google's Picker positions its dialog `position:absolute` from the current scroll
+       offset and then calls window.scrollTo() to bring it into view — that is what yanks
+       the page down then up, and it lands mispositioned. Pin the dialog + backdrop to the
+       viewport (fixed) so they are always centred and fully visible regardless of scroll;
+       openDrivePicker() additionally locks page scroll while it is open, so Google's
+       scrollTo can't move anything. z-index sits above the edit modal (1000) / toast
+       (2000); max-* keeps it inside small / mobile screens. */
     .picker-dialog-bg {
+      position: fixed !important;
+      inset: 0 !important;
       z-index: 100000 !important;
     }
 
-    /* By default Google positions the dialog `absolute` with a scroll-derived top, so
-       opening it scrolls the page down-then-up to reach it. Pin it fixed-centered so it
-       just appears in place, and cap it to the viewport so it fits small / mobile screens. */
     .picker-dialog {
-      z-index: 100001 !important;
       position: fixed !important;
       top: 50% !important;
       left: 50% !important;
@@ -1391,17 +1392,7 @@
       margin: 0 !important;
       max-width: 96vw !important;
       max-height: 90vh !important;
-    }
-
-    .picker-dialog iframe,
-    iframe.picker-frame {
-      position: static !important;
-      top: auto !important;
-      left: auto !important;
-      width: 100% !important;
-      height: 100% !important;
-      max-width: 96vw !important;
-      max-height: 90vh !important;
+      z-index: 100001 !important;
     }
 
     .icon-preview-el {

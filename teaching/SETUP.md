@@ -82,7 +82,31 @@ The admin panel authenticates you with Google. The public course page needs none
      provider screen (`https://<your-project-ref>.supabase.co/auth/v1/callback`).
 3. Copy the **Client ID** → goes into `googleClientId`. Paste the Client ID **and**
    secret back into the Supabase Google provider screen from step 5.1.
-4. (First sign-in only) The admin gate is owner-only. After you sign in once, make your
+4. In the **Supabase dashboard → Authentication → URL Configuration** — this is what
+   decides where you get sent *back* to after Google signs you in:
+   - **Site URL**: your site's root, e.g. `https://<your-username>.github.io/`
+     (or `https://<your-domain>/` if you point a custom domain at Pages). Wildcards are
+     not accepted here.
+   - **Redirect URLs**: one entry per origin you actually open the admin panel from —
+
+     ```
+     https://<your-username>.github.io/teaching/admin/
+     https://<your-domain>/teaching/admin/       ← only if you use a custom domain
+     http://localhost:5500/teaching/admin/       ← only if you test locally (5500 = VS Code Live Server)
+     ```
+
+     On a *project* site the path is `/<repo>/teaching/admin/`. These are matched
+     exactly, so if you ever open the panel as `…/teaching/admin/index.html` rather than
+     `…/teaching/admin/`, list that too — or use a wildcard entry
+     (`https://<your-username>.github.io/teaching/admin/**`) to cover both.
+
+   **Don't skip this step.** The admin panel asks to be returned to the page you signed
+   in from, but Supabase only honours that if the URL is on the Redirect URLs list.
+   Otherwise it silently ignores the request and falls back to the **Site URL** — which
+   on a fresh project defaults to `http://localhost:3000`. Getting dumped on
+   `localhost:3000` after clicking "Sign in" always means this list is missing the URL
+   you started from.
+5. (First sign-in only) The admin gate is owner-only. After you sign in once, make your
    account the owner per the note in `supabase/schema.sql` (or however the RLS policy is
    keyed) so only you can edit.
 

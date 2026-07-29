@@ -2463,21 +2463,22 @@ body.no-scroll>*:not(#mobile-fab):not(#fab-overlay):not(#mobile-fab-menu) {
     #cat-companion.cat-perched #cat-image {
         position: absolute;
         right: 16px;
-        bottom: -25px;
+        bottom: -45px;
         width: 120px;
         pointer-events: auto;
-        animation: none; /* no idle bob while perched on a module header */
+        animation: none;
+        /* no idle bob while perched on a module header */
     }
 
     #cat-companion.cat-perched #cat-speech-bubble {
         right: 8px;
         left: auto;
-        bottom: 58px;
+        bottom: 65px;
         pointer-events: auto;
     }
 
     #cat-companion.cat-perched #cat-speech-bubble::after {
-        right: 24px;
+        right: 50px;
         left: auto;
     }
 
@@ -3716,38 +3717,6 @@ html[data-theme="dark"] .project-groups-grid.desktop-scrollable::-webkit-scrollb
     animation: shimmer 1.5s infinite;
 }
 
-@keyframes skeleton-spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(180deg);
-    }
-}
-
-.skeleton-spinner-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-#spinner-image {
-    width: 150px;
-    height: 2%;
-    opacity: 0;
-    transition: opacity 0.3s ease-in;
-}
-
-#spinner-image.loaded {
-    opacity: 1;
-}
-
 .main-content-wrapper {
     position: relative;
 }
@@ -4025,15 +3994,6 @@ body.is-switching #timetable-container {
         height: 40px;
     }
 
-    .skeleton-spinner-container {
-        width: 150px;
-        height: 150px;
-    }
-
-    #spinner-image {
-        width: 120px;
-        height: 120px;
-    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -4106,7 +4066,7 @@ html[data-theme="dark"] .skeleton-course-button {
 }
 
 #cat-image {
-    width: 150px;
+    width: 130px;
     height: auto;
     animation: cat-idle 2.5s ease-in-out infinite;
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.15));
@@ -4115,7 +4075,7 @@ html[data-theme="dark"] .skeleton-course-button {
 
 #cat-speech-bubble {
     position: absolute;
-    bottom: 100px;
+    bottom: 130px;
     -webkit-hyphens: auto;
     hyphens: auto;
     right: 0;
@@ -4137,7 +4097,7 @@ html[data-theme="dark"] .skeleton-course-button {
     content: '';
     position: absolute;
     bottom: -8px;
-    right: 24px;
+    right: 45px;
     width: 14px;
     height: 14px;
     background: var(--card-background, #fff);

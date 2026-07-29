@@ -65,30 +65,6 @@ function handleActionClick(button, url) {
     }, 1500);
 }
 
-// --- Random Spinner GIF Logic ---
-const spinnerGifs = [
-    '../miscellaneous/loading.webp'
-];
-
-function setRandomSpinnerGif() {
-    const spinnerImg = document.getElementById('spinner-image');
-    if (!spinnerImg) return;
-
-    let chosenGif = sessionStorage.getItem('spinnerGifUrl');
-
-    if (!chosenGif) {
-        const randomIndex = Math.floor(Math.random() * spinnerGifs.length);
-        chosenGif = spinnerGifs[randomIndex];
-        sessionStorage.setItem('spinnerGifUrl', chosenGif);
-    }
-
-    spinnerImg.onload = () => {
-        spinnerImg.classList.add('loaded');
-    };
-
-    spinnerImg.src = chosenGif;
-}
-
 function setupMobileFab() {
     const fab = document.getElementById('mobile-fab');
     const overlay = document.getElementById('fab-overlay');
@@ -129,7 +105,6 @@ function setupMobileFab() {
 
 function init() {
     applyThemeDefaults();
-    setRandomSpinnerGif();
     updateYear();
     applyOwnerBranding();
     // Opt-out kill switch: config.catCompanion === false removes the element,

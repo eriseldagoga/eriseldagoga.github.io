@@ -1854,7 +1854,7 @@ html[data-theme="dark"] .tt-popover-close {
     }
 }
 
-iframe {
+.iframe-container iframe {
     width: 106.4%;
     height: 1440px;
     border: none;
@@ -2003,6 +2003,122 @@ iframe {
 
 .course-button.active::before {
     display: none;
+}
+
+/* --- Archive Year Grouping --- */
+.course-buttons-container.is-archive-mode {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: auto;
+    padding: 5px;
+    gap: 8px;
+}
+
+.archive-nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+@keyframes backBtnEntrance {
+    0% {
+        opacity: 0;
+        transform: translateX(-8px) scale(0.96);
+    }
+
+    60% {
+        transform: translateX(2px) scale(1.01);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+.course-buttons-container.is-archive-mode .archive-course-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.88em;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: transparent;
+    border: 1.5px solid var(--primary-color);
+    color: var(--primary-color);
+    animation: backBtnEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.course-buttons-container.is-archive-mode .archive-course-btn i,
+.course-buttons-container.is-archive-mode .archive-course-btn svg {
+    display: inline-block;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.course-buttons-container.is-archive-mode .archive-course-btn:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+    box-shadow: 0 3px 10px rgba(57, 73, 171, 0.25);
+    transform: translateY(-1px);
+}
+
+.course-buttons-container.is-archive-mode .archive-course-btn:hover i,
+.course-buttons-container.is-archive-mode .archive-course-btn:hover svg {
+    transform: translateX(-3px);
+}
+
+.course-buttons-container.is-archive-mode .archive-course-btn:active {
+    transform: translateY(0) scale(0.95);
+    box-shadow: 0 1px 4px rgba(57, 73, 171, 0.2);
+}
+
+.archive-years-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.archive-year-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+}
+
+.archive-year-label {
+    font-size: 0.84em;
+    font-weight: 600;
+    color: var(--primary-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 6px;
+    opacity: 0.9;
+    letter-spacing: 0.2px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.archive-year-label i,
+.archive-year-label svg {
+    font-size: 0.95em;
+    opacity: 0.8;
+}
+
+.archive-year-group .course-tabs-wrapper {
+    width: 100%;
+    padding-top: 2px;
+    padding-bottom: 4px;
 }
 
 /* Empty state */
@@ -2194,12 +2310,6 @@ iframe {
     100% {
         transform: rotate(180deg);
     }
-}
-
-.loading-text {
-    text-align: center;
-    color: #666;
-    margin-top: 20px;
 }
 
 .content-hidden {
@@ -2473,7 +2583,7 @@ body.no-scroll>*:not(#mobile-fab):not(#fab-overlay):not(#mobile-fab-menu) {
     #cat-companion.cat-perched #cat-speech-bubble {
         right: 8px;
         left: auto;
-        bottom: 65px;
+        bottom: 60px;
         pointer-events: auto;
     }
 
@@ -2636,7 +2746,7 @@ body.no-scroll>*:not(#mobile-fab):not(#fab-overlay):not(#mobile-fab-menu) {
         height: 310px;
     }
 
-    iframe {
+    .iframe-container iframe {
         top: -395px;
         left: -58px;
     }
@@ -2653,7 +2763,7 @@ body.no-scroll>*:not(#mobile-fab):not(#fab-overlay):not(#mobile-fab-menu) {
         width: 150%;
     }
 
-    iframe {
+    .iframe-container iframe {
         top: -390px;
         left: -58px;
     }
@@ -2929,6 +3039,54 @@ body.no-scroll>*:not(#mobile-fab):not(#fab-overlay):not(#mobile-fab-menu) {
         background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.85) 20%, var(--card-background) 40%, var(--card-background) 100%) !important;
     }
 
+    .course-buttons-container.is-archive-mode {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 5px !important;
+        min-height: auto !important;
+        overflow: visible !important;
+    }
+
+    .course-buttons-container.is-archive-mode .archive-nav-bar {
+        margin-bottom: 6px;
+    }
+
+    .course-buttons-container.is-archive-mode .archive-course-btn {
+        position: static !important;
+        transform: none !important;
+        height: auto !important;
+        padding: 7px 15px !important;
+        background: transparent !important;
+        border: 1.5px solid var(--primary-color) !important;
+        border-radius: 20px !important;
+        color: var(--primary-color) !important;
+        box-shadow: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        margin: 0 !important;
+        z-index: auto !important;
+        animation: backBtnEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    }
+
+    .course-buttons-container.is-archive-mode .archive-course-btn:hover,
+    .course-buttons-container.is-archive-mode .archive-course-btn:active {
+        background-color: var(--primary-color) !important;
+        color: #ffffff !important;
+    }
+
+    .course-buttons-container.is-archive-mode .archive-course-btn:active {
+        transform: scale(0.95) !important;
+    }
+
+    .course-buttons-container.is-archive-mode .course-tabs-wrapper {
+        padding-right: 15px !important;
+    }
+
+    .course-buttons-container.is-archive-mode .archive-year-group {
+        margin-bottom: 8px;
+    }
+
     .course-button {
         padding: 8px 12px !important;
         font-size: .75em !important;
@@ -3042,10 +3200,6 @@ html[data-theme="dark"] body::before {
 
 html[data-theme="dark"] .app-loading {
     background-color: var(--dark-bg);
-}
-
-html[data-theme="dark"] .loading-text {
-    color: var(--dark-text);
 }
 
 html[data-theme="dark"] .course-header {
@@ -3364,10 +3518,6 @@ html[data-theme="dark"] .project-groups-grid.desktop-scrollable::-webkit-scrollb
 
     html:not([data-theme="light"]) .app-loading {
         background-color: var(--dark-bg);
-    }
-
-    html:not([data-theme="light"]) .loading-text {
-        color: var(--dark-text);
     }
 
     html:not([data-theme="light"]) .course-header {
@@ -3715,6 +3865,16 @@ html[data-theme="dark"] .project-groups-grid.desktop-scrollable::-webkit-scrollb
     transform: translateX(-100%);
     background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     animation: shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(180deg);
+    }
 }
 
 .main-content-wrapper {
@@ -4066,7 +4226,7 @@ html[data-theme="dark"] .skeleton-course-button {
 }
 
 #cat-image {
-    width: 130px;
+    width: 120px;
     height: auto;
     animation: cat-idle 2.5s ease-in-out infinite;
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.15));
@@ -4075,7 +4235,7 @@ html[data-theme="dark"] .skeleton-course-button {
 
 #cat-speech-bubble {
     position: absolute;
-    bottom: 130px;
+    bottom: 115px;
     -webkit-hyphens: auto;
     hyphens: auto;
     right: 0;
@@ -4097,7 +4257,7 @@ html[data-theme="dark"] .skeleton-course-button {
     content: '';
     position: absolute;
     bottom: -8px;
-    right: 45px;
+    right: 44px;
     width: 14px;
     height: 14px;
     background: var(--card-background, #fff);
@@ -4422,6 +4582,15 @@ html[data-theme="dark"] textarea:disabled {
     background-color: var(--dark-surface-light);
 }
 
+html[data-theme="dark"] .archive-year-label {
+    color: var(--dark-text-light);
+}
+
+html[data-theme="dark"] .course-buttons-container.is-archive-mode .archive-course-btn {
+    border-color: var(--primary-color);
+    color: var(--dark-text);
+}
+
 @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) .sync-status {
         background-color: rgba(255, 255, 255, 0.08);
@@ -4441,5 +4610,14 @@ html[data-theme="dark"] textarea:disabled {
     html:not([data-theme="light"]) input:disabled,
     html:not([data-theme="light"]) textarea:disabled {
         background-color: var(--dark-surface-light);
+    }
+
+    html:not([data-theme="light"]) .archive-year-label {
+        color: var(--dark-text-light);
+    }
+
+    html:not([data-theme="light"]) .course-buttons-container.is-archive-mode .archive-course-btn {
+        border-color: var(--primary-color);
+        color: var(--dark-text);
     }
 }

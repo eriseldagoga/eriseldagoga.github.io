@@ -30,6 +30,41 @@ create table if not exists public.course_rows (
 create index if not exists course_rows_lookup_idx
     on public.course_rows (sheet_name, is_archive, row_index);
 
+-- ─── timetable_rows ─────────────────────────────────────────────────────────
+-- Backs the department Class Timetable page (/timetable/) and its admin portal
+-- (/timetable/admin/). Same generic-slot design as course_rows — `type` says what
+-- the row is and b–j hold that type's fields — but a separate table, so a
+-- timetable row can never surface in a course listing.
+--
+--   type            section          b            c              d           e
+--   ─────────────── ──────────────── ──────────── ────────────── ─────────── ──────────
+--   setting         'settings'       key¹        value           —           —
+--   info_item       'settings'       icon class  text            —           —
+--   action_button   'settings'       label       icon class      url         css class
+--   category        'settings'       name        icon class      kind²       —
+--   entry           <category name>  label       timetable_id    class_id    hidden³
+--   lecturer        <category name>  label       lecturer_id     —           hidden³
+--
+--   ¹ semester_start | semester_end | holiday_start | holiday_weeks
+--   ² 'timetable' (EIS class timetable, needs both ids) or 'lecturer' (EIS live
+--     lecturer view, needs one id). An explicit column rather than the old
+--     sheet-named-"Lecturers" convention, which broke silently on rename.
+--   ³ '1' if the admin toggled this entry hidden — kept in the table (so it
+--     can be found and re-shown) but skipped by the public page.
+--
+-- row_index orders rows within a section: the tab order of categories, and the
+-- button order of the entries inside each category.
+create table if not exists public.timetable_rows (
+    row_uid   text    not null primary key,
+    section   text    not null,
+    row_index integer not null,
+    type      text    not null,
+    b text, c text, d text, e text, f text, g text, h text, i text, j text
+);
+
+create index if not exists timetable_rows_lookup_idx
+    on public.timetable_rows (section, row_index);
+
 -- ─── admins ─────────────────────────────────────────────────────────────────
 -- The edit allowlist, keyed by Google account email. A signed-in user may edit
 -- iff their email is here. The public course page never reads this table.
@@ -41,8 +76,9 @@ create table if not exists public.admins (
 );
 
 -- ─── Row-Level Security ─────────────────────────────────────────────────────
-alter table public.course_rows enable row level security;
-alter table public.admins      enable row level security;
+alter table public.course_rows    enable row level security;
+alter table public.timetable_rows enable row level security;
+alter table public.admins         enable row level security;
 
 -- admins: a signed-in user may read ONLY their own row — that's the app's
 -- "am I an admin?" lookup. The allowlist is managed in the Supabase table
@@ -82,9 +118,32 @@ create policy admin_crud
         where admins.email = (auth.jwt() ->> 'email')
     ));
 
+-- timetable_rows: same shape as course_rows — the department timetable is public,
+-- and only an admin can edit it.
+drop policy if exists "public read" on public.timetable_rows;
+create policy "public read"
+    on public.timetable_rows for select
+    to public
+    using (true);
+
+drop policy if exists admin_crud on public.timetable_rows;
+create policy admin_crud
+    on public.timetable_rows for all
+    to authenticated
+    using (exists (
+        select 1 from public.admins
+        where admins.email = (auth.jwt() ->> 'email')
+    ))
+    with check (exists (
+        select 1 from public.admins
+        where admins.email = (auth.jwt() ->> 'email')
+    ));
+
 -- ─── Grants (PostgREST needs these alongside the policies above) ─────────────
 grant select on public.course_rows to anon, authenticated;
 grant insert, update, delete on public.course_rows to authenticated;
+grant select on public.timetable_rows to anon, authenticated;
+grant insert, update, delete on public.timetable_rows to authenticated;
 grant select on public.admins to authenticated;
 
 -- ─── Bootstrap: make yourself the first admin ───────────────────────────────

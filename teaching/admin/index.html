@@ -9,6 +9,20 @@
   <link rel="icon" type="image/png" href="/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap" rel="stylesheet">
   <script defer src="https://kit.fontawesome.com/4dd5c549ad.js" crossorigin="anonymous"></script>
+  <!-- GitHub Pages 301-redirects /teaching/admin to /teaching/admin/; some dev
+       servers (VS Code Live Server) serve the index as-is instead, and then every
+       relative path resolves one directory too high — css/styles.css and
+       ../js/config.js both 404, and the missing config takes the whole panel down.
+       The trailing slash also has to match the Supabase redirect-URL allowlist, so
+       normalise before sign-in runs, keeping the OAuth #access_token fragment. -->
+  <script>
+    (function () {
+      const p = location.pathname;
+      if (!p.endsWith('/') && !p.split('/').pop().includes('.')) {
+        location.replace(p + '/' + location.search + location.hash);
+      }
+    })();
+  </script>
   <script>
     (function () {
       const theme = localStorage.getItem('theme-preference') || 'auto';

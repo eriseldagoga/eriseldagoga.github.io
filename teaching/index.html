@@ -12,6 +12,19 @@
         rel="stylesheet">
 
 
+    <!-- GitHub Pages 301-redirects /teaching to /teaching/; some dev servers (VS
+         Code Live Server) serve the index as-is instead, and then every relative
+         path resolves one directory too high — js/config.js 404s and the page
+         can't reach Supabase at all. Normalise before anything else runs. -->
+    <script>
+        (function () {
+            const p = location.pathname;
+            if (!p.endsWith('/') && !p.split('/').pop().includes('.')) {
+                location.replace(p + '/' + location.search + location.hash);
+            }
+        })();
+    </script>
+
     <script>
         (function () {
             const theme = localStorage.getItem('theme-preference') || 'auto';
@@ -164,6 +177,9 @@
     </div>
 
     <script src="js/config.js"></script>
+    <!-- Prunes, abbreviates, scales and adds the cell popover to the EIS
+         fragment. Must load before scripts.js, which calls into it. -->
+    <script src="js/timetable.js"></script>
     <script src="js/scripts.js"></script>
 </body>
 

@@ -164,13 +164,19 @@ h2 {
     margin-top: 6px;
     display: flex;
     align-items: flex-start;
+    justify-content: center;
+    font-size: 50px;
+    width: 1.25em;
+    height: 1em;
     z-index: 1;
     pointer-events: none;
 }
 
 #header-decoration i,
 #header-decoration svg {
-    font-size: 50px;
+    font-size: inherit;
+    max-width: 100%;
+    height: 1em;
     color: rgba(255, 255, 255, 0.8);
     line-height: 1;
 }
@@ -2879,6 +2885,7 @@ body.no-scroll>*:not(#mobile-fab):not(#fab-overlay):not(#mobile-fab-menu) {
     }
 
     #header-decoration {
+        font-size: 35px;
         margin-right: 10px;
     }
 
@@ -3939,6 +3946,11 @@ body.is-switching #timetable-container {
     pointer-events: none;
 }
 
+/* Keep partially updated header text/icons hidden until the course is ready. */
+body.is-switching #course-header {
+    transition: none;
+}
+
 .skeleton-header {
     background-color: #e0e0e0;
     padding: 30px;
@@ -4620,4 +4632,28 @@ html[data-theme="dark"] .course-buttons-container.is-archive-mode .archive-cours
         border-color: var(--primary-color);
         color: var(--dark-text);
     }
+}
+
+/* Empty lecturer catalogs retain navigation and the owner's footer. */
+.teaching-empty #course-header> :not(#course-code):not(#course-title):not(#header-decoration),
+.teaching-empty #course-action-buttons,
+.teaching-empty #timetable-container,
+.teaching-empty #announcement-banner,
+.teaching-empty .search-container,
+.teaching-empty #side-nav-container,
+.teaching-empty #mobile-fab,
+.teaching-empty #cat-companion,
+#footer-cv[hidden],
+#footer-email[hidden] {
+    display: none !important;
+}
+
+.teaching-empty #course-content {
+    text-align: center;
+    padding: 24px 0 48px;
+}
+
+.teaching-site-message {
+    color: var(--text-color);
+    margin: 0 0 16px;
 }

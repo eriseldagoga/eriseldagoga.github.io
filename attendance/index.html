@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f4f4">
+  <title>Stando</title>
+  <!-- Change /favicon.ico to the path to your website's own favicon. -->
+  link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Eriselda" />
+  <link rel="manifest" href="/favicon/site.webmanifest" />
+  <!-- Apply the saved or system theme before the application loads. -->
+  <style id="stando-startup-theme">
+    html {
+      color-scheme: light;
+      background: #f4f4f4;
+      color: #333;
+    }
+
+    html.dark-mode {
+      color-scheme: dark;
+      background: #000;
+      color: #e0e0e0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      html:not([data-stando-theme="light"]) {
+        color-scheme: dark;
+        background: #000;
+        color: #e0e0e0;
+      }
+    }
+
+    body {
+      margin: 0;
+      background: inherit;
+    }
+
+    #stando-load-error {
+      max-width: 32rem;
+      margin: 15vh auto;
+      padding: 24px;
+      font: 16px/1.5 system-ui;
+    }
+
+    #stando-load-error button {
+      padding: 10px 20px;
+      border: 0;
+      border-radius: 20px;
+      background: #2196f3;
+      color: white;
+      font: inherit;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    (function () {
+      let theme = 'auto';
+      try { theme = localStorage.getItem('theme') || 'auto'; } catch { }
+      if (!['auto', 'light', 'dark'].includes(theme)) theme = 'auto';
+      document.documentElement.dataset.standoTheme = theme;
+      const dark = theme === 'dark' || (theme === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.classList.toggle('dark-mode', dark);
+      document.querySelector('meta[name="theme-color"]').content = dark ? '#000000' : '#f4f4f4';
+    })();
+  </script>
+  <script defer src="https://bredliplaku.com/attendance/embed.js"
+    onerror="document.getElementById('stando-load-error').hidden = false"></script>
+</head>
+
+<body>
+  <main id="stando-load-error" hidden role="alert">
+    <h1>Stando unavailable</h1>
+    <p>Check your connection and try again.</p>
+    <button type="button" onclick="location.reload()">Try again</button>
+  </main>
+  <noscript>Please enable JavaScript to use Stando.</noscript>
+</body>
+
+</html>

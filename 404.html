@@ -4,24 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0e14">
-    <title>Eriselda's Website</title>
-    <meta name="description" content="Eriselda Goga's academic website: research, teaching, and contact links.">
-    <link rel="canonical" href="https://eriseldagoga.com/">
-
-    <!-- Link previews (LinkedIn, WhatsApp, Slack, ...) -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://eriseldagoga.com/">
-    <meta property="og:title" content="Eriselda Goga">
-    <meta property="og:description" content="Eriselda Goga's website: research, teaching, and contact links.">
-    <meta property="og:image" content="https://eriseldagoga.com/miscellaneous/profile.webp">
-
+    <title>Page not found · Eriselda's Website</title>
+    <!-- GitHub Pages serves this page for any missing path, so every URL here must be absolute. -->
     <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
     <link rel="shortcut icon" href="/favicon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Eriselda" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,8 +20,7 @@
         href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&family=Playwrite+GB+J:ital,wght@0,100..400;1,100..400&display=swap"
         rel="stylesheet">
 
-
-    <!-- Instant theme application to prevent flash -->
+    <!-- Same as index.html: apply the saved theme before first paint -->
     <script>
         (function () {
             let theme = 'auto';
@@ -38,7 +28,6 @@
             if (theme === 'light' || theme === 'dark') {
                 document.documentElement.setAttribute('data-theme', theme);
             }
-            // Set meta theme-color immediately
             const isDark = theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
             document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.remove());
             const meta = document.createElement('meta');
@@ -58,26 +47,14 @@
 
     <main class="page-wrapper">
         <div class="profile-section">
-            <img src="/miscellaneous/profile.webp" class="profile-photo" alt="Eriselda Goga" width="130" height="130">
-            <p class="profile-name">welcome</p>
-            <h1 class="profile-subtitle">Eriselda Goga</h1>
-            <div class="profile-links">
-                <a href="https://www.linkedin.com/in/eriselda-goga/" aria-label="LinkedIn">
-                    <i class="fa-brands fa-square-linkedin"></i>
-                </a>
-                <a href="https://github.com/eriseldagoga" aria-label="GitHub">
-                    <i class="fa-brands fa-github"></i>
-                </a>
-                <a href="mailto:egoga@epoka.edu.al" aria-label="Email">
-                    <i class="fa-solid fa-envelope"></i>
-                </a>
-            </div>
+            <p class="profile-name">oops</p>
+            <h1 class="profile-subtitle">Page not found</h1>
         </div>
 
         <div class="button-groups">
             <div class="button-group">
-                <a href="https://scholar.google.com/citations?user=BaXtdscAAAAJ">
-                    <div class="group-btn"><i class="fa-solid fa-flask"></i> Research</div>
+                <a href="/">
+                    <div class="group-btn"><i class="fa-solid fa-house"></i> Home</div>
                 </a>
                 <a href="/teaching/">
                     <div class="group-btn"><i class="fa-solid fa-chalkboard-teacher"></i> Teaching</div>
@@ -98,7 +75,8 @@
 
     <div id="cat-companion">
         <div id="cat-speech-bubble" aria-live="polite"></div>
-        <img id="cat-image" src="/miscellaneous/catto.webp" alt="A friendly cat companion" width="120" height="120">
+        <img id="cat-image" src="/miscellaneous/catto.webp" alt="A friendly cat companion" width="120"
+            height="120">
     </div>
 </body>
 

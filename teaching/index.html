@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
   <title>Syllabase</title>
-  <!-- Replace /favicon.ico with the path to your website's own favicon. -->
+  <meta name="description" content="Course materials, syllabi and teaching resources.">
   <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
   <link rel="shortcut icon" href="/favicon/favicon.ico" />
@@ -38,6 +38,14 @@
       margin: 0;
       background: inherit;
     }
+
+    /* Matches the embed's own error screen */
+    #teaching-load-error {
+      max-width: 40rem;
+      margin: 12vh auto;
+      padding: 24px;
+      font: 16px/1.6 system-ui;
+    }
   </style>
   <script>
     (function () {
@@ -50,11 +58,19 @@
       document.querySelector('meta[name="theme-color"]').content = dark ? '#000000' : light;
     })();
   </script>
+  <!-- The embed shows its own error if it loads but can't fetch the courses; the
+       fallback below covers the embed script itself failing to load. -->
   <script defer src="https://syllabase.al/embed.js"
-    data-teaching-lecturer="6cb0b9e3-986a-40a8-8755-d924ac2bb9e6"></script>
+    data-teaching-lecturer="6cb0b9e3-986a-40a8-8755-d924ac2bb9e6"
+    onerror="document.getElementById('teaching-load-error').hidden = false"></script>
 </head>
 
 <body>
+  <main id="teaching-load-error" hidden role="alert">
+    <h1>Courses unavailable</h1>
+    <p>Check your connection and try again.</p>
+    <button type="button" onclick="location.reload()">Try again</button>
+  </main>
   <noscript>Please enable JavaScript to view content.</noscript>
 </body>
 

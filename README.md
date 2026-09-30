@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="miscellaneous/profile.jpg" alt="Logo" width="80" height="80" style="border-radius: 50%;">
+  <img src="miscellaneous/profile.webp" alt="Eriselda Goga" width="80" height="80" style="border-radius: 50%;">
   
   # Eriselda's Website
   
@@ -8,11 +8,11 @@
   </p>
 
   <p>
-    <a href="https://eriseldagoga.github.io"><strong>View Live Website</strong></a>
+    <a href="https://eriseldagoga.com"><strong>View Live Website</strong></a>
   </p>
 </div>
 
-</br>
+<br>
 
 ## 📫 Connect With Me
 

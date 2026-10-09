@@ -113,6 +113,21 @@ function setupThemeToggle() {
         }
     });
 
+    // Follow a theme picked elsewhere: in another open tab (storage event), or on
+    // another page before coming Back to a copy kept in the back/forward cache.
+    // /teaching/ shares the same key, so it counts as "elsewhere" too.
+    const syncFromStorage = () => {
+        const pref = storage.get(KEY);
+        const next = Object.hasOwn(icons, pref) ? pref : 'auto';
+        if (next !== currentPref) applyTheme(next);
+    };
+    window.addEventListener('storage', (event) => {
+        if (event.key === KEY || event.key === null) syncFromStorage();
+    });
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) syncFromStorage();
+    });
+
     applyTheme(currentPref);
 }
 
@@ -183,14 +198,14 @@ function setupCatCompanion() {
         } while (randomIndex === lastIndex && catMessages.length > 1);
         lastIndex = randomIndex;
 
-        if (bubble.classList.contains('visible')) {
-            // Already open: swap text immediately and reset the auto-hide timer.
-            bubble.textContent = catMessages[randomIndex];
-            clearTimeout(bubbleTimeout);
+        // Always restart the auto-hide timer. A timer left over from a bubble that
+        // was dismissed early would otherwise close this one before its time.
+        clearTimeout(bubbleTimeout);
+        bubbleTimeout = setTimeout(hideBubble, 6000);
 
-            bubbleTimeout = setTimeout(() => {
-                bubble.classList.remove('visible');
-            }, 6000);
+        if (bubble.classList.contains('visible')) {
+            // Already open: swap text immediately.
+            bubble.textContent = catMessages[randomIndex];
         } else {
             clearTimeout(animationTimeout);
 
@@ -198,11 +213,13 @@ function setupCatCompanion() {
                 bubble.textContent = catMessages[randomIndex];
                 bubble.classList.add('visible');
             }, 50);
-
-            bubbleTimeout = setTimeout(() => {
-                bubble.classList.remove('visible');
-            }, 6000);
         }
+    };
+
+    const hideBubble = () => {
+        clearTimeout(bubbleTimeout);
+        clearTimeout(animationTimeout);
+        bubble.classList.remove('visible');
     };
 
     cat.addEventListener('click', (event) => {
@@ -220,12 +237,12 @@ function setupCatCompanion() {
 
     document.addEventListener('click', (event) => {
         if (bubble.classList.contains('visible') && !cat.contains(event.target)) {
-            bubble.classList.remove('visible');
+            hideBubble();
         }
     });
 
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') bubble.classList.remove('visible');
+        if (event.key === 'Escape') hideBubble();
     });
 }
 

@@ -313,18 +313,6 @@ body {
 }
 
 /* === CAT COMPANION === */
-@keyframes cat-idle {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-3px);
-    }
-}
-
 /* Hidden until scripts.js adds .visible. visibility (flipped after the exit
    animation) keeps the hidden cat out of the keyboard tab order. */
 #cat-companion {
@@ -350,15 +338,14 @@ body {
 }
 
 #cat-image {
-    width: 120px;
+    width: 150px;
     height: auto;
-    animation: cat-idle 2.5s ease-in-out infinite;
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.15));
 }
 
 #cat-speech-bubble {
     position: absolute;
-    bottom: 115px;
+    bottom: 136px;
     right: 0;
     width: 200px;
     padding: 15px;

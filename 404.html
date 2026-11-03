@@ -38,6 +38,30 @@
     </script>
 
     <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* One line even for "wrong turn?", which would wrap on phones at the
+           index's size (18vw) and run its descenders into the line below. */
+        #notfound-greeting {
+            white-space: nowrap;
+            font-size: clamp(2.5em, 14vw, 4.5em);
+        }
+
+        .notfound-text {
+            max-width: 26em;
+            margin: 18px auto 0;
+            color: #666;
+        }
+
+        html[data-theme="dark"] .notfound-text {
+            color: var(--dark-text-muted);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            html:not([data-theme="light"]) .notfound-text {
+                color: var(--dark-text-muted);
+            }
+        }
+    </style>
 
     <script src="/js/scripts.js" defer></script>
     <script src="https://kit.fontawesome.com/4dd5c549ad.js" crossorigin="anonymous"></script>
@@ -47,8 +71,39 @@
 
     <main class="page-wrapper">
         <div class="profile-section">
-            <p class="profile-name">oops</p>
-            <h1 class="profile-subtitle">Page not found</h1>
+            <p class="profile-name" id="notfound-greeting">lost?</p>
+            <!-- Runs inline so the swap happens before first paint. A new line per
+                 visit, but one picked in the last COOLDOWN is kept, so mashing
+                 reload doesn't flick through them. -->
+            <script>
+                (function () {
+                    const MESSAGES = [
+                        'lost?', 'oops.', 'uh-oh.', 'whoops!', 'hmm…', 'wrong turn?', 'nope.',
+                        'oh no.', 'huh?', 'not here.', 'well…', 'gone!',
+                        'missing.', 'oh well.', 'uh…', 'nothing.', 'empty.', 'poof!'
+                    ];
+                    const KEY = 'notfound-greeting';
+                    const COOLDOWN = 30 * 1000;
+                    const el = document.getElementById('notfound-greeting');
+                    const now = Date.now();
+
+                    let last = null;
+                    try { last = JSON.parse(localStorage.getItem(KEY)); } catch { }
+                    if (last && MESSAGES.includes(last.text) && now - last.time < COOLDOWN) {
+                        el.textContent = last.text;
+                        return;
+                    }
+
+                    // Never the same one twice in a row.
+                    const pool = MESSAGES.filter(m => !last || m !== last.text);
+                    const text = pool[Math.floor(Math.random() * pool.length)];
+                    el.textContent = text;
+                    try { localStorage.setItem(KEY, JSON.stringify({ text, time: now })); } catch { }
+                })();
+            </script>
+            <h1 class="profile-subtitle">404 · Page not found</h1>
+            <p class="notfound-text">There's nothing at this address. The page may have moved, or the link may
+                have a typo.</p>
         </div>
 
         <div class="button-groups">
